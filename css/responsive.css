@@ -1,0 +1,202 @@
+﻿/* =====================================================
+   RESPONSIVE.CSS � Prime Ecommerce Hub
+   Full Site Responsive � All Pages
+   Breakpoints: 1200px | 1024px | 768px | 560px | 400px
+   ===================================================== */
+
+
+/* ===================================================
+   TABLET LARGE (max-width:1200px)
+   =================================================== */
+@media (max-width: 1200px) {
+  .nav-container { padding: 0 24px; }
+  .hero-container { padding: 48px 24px; gap: 28px; }
+  .hero-img { max-width: 400px; height: 360px; }
+  .courses-grid { grid-template-columns: repeat(2, 1fr); }
+  .why-grid { grid-template-columns: repeat(2, 1fr); }
+  .professional-layout { gap: 32px; }
+  .footer-inner { grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 24px; }
+  .ab-intro-grid { gap: 36px; }
+  .ab-team-grid { grid-template-columns: repeat(3, minmax(200px, 1fr)); }
+  .events-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .contact-layout { gap: 28px; }
+}
+
+/* ===================================================
+   TABLET (max-width:1024px)
+   =================================================== */
+@media (max-width: 1024px) {
+  .hero-container { grid-template-columns: 1fr; text-align: center; padding: 48px 24px; }
+  .hero-content p { max-width: 100%; margin: 0 auto 22px; }
+  .hero-btns { justify-content: center; }
+  .hero-contact { justify-content: center; }
+  .hero-skills { justify-content: center; }
+  .hero-photo {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+  }
+  .hero-img {
+    max-width: 380px;
+    height: 320px;
+    width: 100%;
+  }
+  .hero { min-height: auto; }
+  .why-grid { grid-template-columns: repeat(2, 1fr); }
+  .courses-grid { grid-template-columns: repeat(2, 1fr); }
+  .professional-layout { grid-template-columns: 1fr; gap: 28px; }
+  .solutions-grid { grid-template-columns: 1fr 1fr; }
+  .prof-image { height: 260px; }
+  .footer-inner { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  .ab-intro-grid { grid-template-columns: 1fr; gap: 32px; }
+  .founder-layout { grid-template-columns: 1fr; gap: 40px; }
+  .ab-mv-two { gap: 16px; }
+  .ab-team-grid { grid-template-columns: repeat(3, minmax(180px, 1fr)); gap: 20px; }
+  .events-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .events-section { padding: 64px 0; }
+  .event-image-placeholder { height: 180px; }
+  .ap-layout { grid-template-columns: 1fr; }
+  .ap-sidebar { grid-template-columns: repeat(2, 1fr); }
+  .ap-courses-grid { grid-template-columns: repeat(2, 1fr); }
+  .ap-syll-grid { grid-template-columns: 1fr; }
+}
+
+/* ===================================================
+   MOBILE LARGE (max-width:768px)
+   =================================================== */
+@media (max-width: 768px) {
+  html, body { overflow-x: hidden; }
+
+  /* NAVBAR */
+  .nav-hamburger { display: flex; }
+  .nav-enroll-btn { display: none; }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;
+    top: 70px; left: 0; right: 0;
+    background: #0f172a;
+    padding: 16px 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    gap: 4px;
+    z-index: 200;
+  }
+  .nav-links.open { display: flex; }
+  .nav-container { position: relative; padding: 0 18px; }
+
+  /* HOME */
+  .hero-container { padding: 36px 20px; }
+  .hero-content h1 { font-size: clamp(1.9rem, 6vw, 2.8rem); }
+  .hero-btns { flex-direction: column; align-items: stretch; }
+  .btn-primary, .btn-outline { justify-content: center; text-align: center; }
+  .hero-photo { display: flex; justify-content: center; margin-top: 20px; }
+  .hero-img { max-width: 320px; height: 280px; width: 100%; }
+  .section-container { padding: 52px 20px; }
+  .courses-grid { grid-template-columns: 1fr; gap: 14px; }
+  .why-grid { grid-template-columns: 1fr; gap: 12px; }
+  .contact-layout { grid-template-columns: 1fr; gap: 24px; }
+  .professional-section { padding: 48px 20px; }
+  .professional-layout { grid-template-columns: 1fr; gap: 24px; }
+  .professional-card { padding: 20px; }
+  .solutions-card { padding: 24px; }
+  .solutions-grid { grid-template-columns: 1fr; }
+  .solutions-card h3 { font-size: 1.4rem; }
+  .prof-image { height: 220px; }
+  .footer-inner { grid-template-columns: 1fr; padding: 40px 20px 28px; }
+  .footer-bottom { padding: 14px 20px; }
+
+  /* ABOUT */
+  .ab-hero { padding: 60px 0 48px; }
+  .ab-container { padding: 0 20px; }
+  .ab-mv-section { padding: 48px 0; }
+  .ab-mv-two { grid-template-columns: 1fr; gap: 16px; }
+  .ab-mv-head { margin-bottom: 28px; }
+  .founder-section { padding: 52px 0; }
+  .founder-image { height: 320px; }
+  .founder-content h2 { font-size: 1.8rem; }
+  .founder-name { font-size: 1.4rem; }
+  .founder-cta { flex-direction: column; }
+  .founder-cta .btn-primary,
+  .founder-cta .btn-outline { width: 100%; text-align: center; }
+  .ab-team-section { padding: 52px 0 60px; }
+  .ab-team-grid { grid-template-columns: repeat(2, minmax(160px, 1fr)); gap: 16px; padding: 0 16px; }
+  .ab-team-head h2 { font-size: 2.2rem; }
+  .ab-team-image { height: 160px; }
+  .ab-team-card { height: auto; max-width: 100%; }
+  .events-grid { grid-template-columns: 1fr; gap: 16px; padding: 0 20px; }
+  .event-image-placeholder { height: 160px; }
+  .events-section { padding: 52px 0; }
+  .events-section .section-head { margin-bottom: 40px; }
+  .why-section .why-grid { grid-template-columns: 1fr; }
+  .timeline-container { flex-direction: column; align-items: center; gap: 16px; }
+  .timeline-stage { width: 100%; max-width: 260px; }
+  .timeline-arrow svg { transform: rotate(90deg); }
+  .timeline-header { margin-bottom: 48px; }
+  .ab-cta-section { padding: 52px 20px; }
+  .ab-cta-btns { flex-direction: column; align-items: center; }
+  .ab-cta-btns .btn-primary,
+  .ab-cta-btns .btn-outline { width: 100%; max-width: 300px; }
+
+  /* CONTACT PAGE */
+  .contact-page { padding: 48px 0; }
+  .contact-intro h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); }
+  .input-row { flex-direction: column !important; }
+
+  /* APPLY */
+  .ap-layout { grid-template-columns: 1fr; gap: 16px; }
+  .ap-sidebar { grid-template-columns: 1fr; }
+  .ap-courses-grid { grid-template-columns: 1fr; }
+  .ap-grid-2 { grid-template-columns: 1fr; }
+  .ap-radio-group { grid-template-columns: 1fr; }
+  .ap-step-btns { flex-direction: column; }
+  .ap-steps { gap: 0; }
+  .ap-step span { display: none; }
+  .ap-nav-inner { padding: 0 16px; }
+  .ap-container { padding: 0 16px; }
+
+  /* LEARN / SERVICES */
+  .learn-grid, .services-grid { grid-template-columns: 1fr !important; }
+  .container { padding: 0 20px; }
+}
+
+/* ===================================================
+   MOBILE (max-width:560px)
+   =================================================== */
+@media (max-width: 560px) {
+  .section-container { padding: 40px 16px; }
+  .hero-container { padding: 28px 16px; }
+  .hero-content h1 { font-size: clamp(1.7rem, 7vw, 2.2rem); }
+  .footer-inner { grid-template-columns: 1fr; padding: 32px 16px 24px; }
+  .footer-social { flex-wrap: wrap; }
+  .ab-container { padding: 0 14px; }
+  .ab-mv-box { padding: 28px 22px; }
+  .ab-team-grid { grid-template-columns: 1fr; max-width: 340px; margin: 0 auto; padding: 0 16px; }
+  .ab-team-card { max-width: 100%; height: auto; }
+  .ab-team-image { height: 200px; }
+  .contact-page { padding: 32px 0; }
+  .contact-form { padding: 20px 14px; }
+  .ap-hero h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
+  .container { padding: 0 14px; }
+}
+
+/* ===================================================
+   MOBILE SMALL (max-width:400px)
+   =================================================== */
+@media (max-width: 400px) {
+  .section-container { padding: 32px 14px; }
+  .nav-container { padding: 0 14px; }
+  .hero-content h1 { font-size: 1.6rem; }
+  .ab-container { padding: 0 12px; }
+  .ab-hero h1 { font-size: 1.7rem; }
+  .ab-mv-box { padding: 22px 16px; }
+  .ap-nav-inner { padding: 0 12px; }
+  .ap-container { padding: 0 12px; }
+}
+
+/* ===================================================
+   GLOBAL UTILITY
+   =================================================== */
+html, body { overflow-x: hidden; }
+img { max-width: 100%; height: auto; }
+.db-table-wrap, .db-card { overflow-x: auto; }

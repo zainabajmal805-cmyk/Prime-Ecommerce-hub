@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Course Details | Prime Ecommerce Hub - E-commerce Training Pakistan</title>
+  <meta name="description" content="View detailed curriculum, modules and enrollment for e-commerce courses at Prime Ecommerce Hub. Amazon FBA, Shopify, Daraz, Freelancing, WordPress, AI Tools and more." />
+  <meta name="keywords" content="course details Prime Ecommerce Hub, Amazon FBA curriculum, Shopify course modules, ecommerce training Pakistan" />
+  <meta name="author" content="Prime Ecommerce Hub" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://primeecommercehub.com/course-detail.html" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Course Details | Prime Ecommerce Hub" />
+  <meta property="og:description" content="View full curriculum and enroll in e-commerce courses at Prime Ecommerce Hub Pakistan." />
+  <meta property="og:url" content="https://primeecommercehub.com/course-detail.html" />
+  <meta property="og:site_name" content="Prime Ecommerce Hub" />
+  <meta property="og:image" content="images/logo.png" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Course Details | Prime Ecommerce Hub" />
+  <meta name="twitter:description" content="Full curriculum & enrollment for Amazon, Shopify, Daraz, Freelancing courses in Pakistan." />
+  <meta name="twitter:image" content="images/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/course-detail.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="cd-nav">
+  <div class="cd-nav-inner">
+    <a href="index.html" class="cd-logo">
+      <div class="cd-logo-mark">
+        <img src="images/logo.png" alt="Prime Ecommerce Hub" style="width:44px;height:44px;object-fit:contain;display:block;" />
+      </div>
+      <div class="cd-logo-text">
+        <strong style="font-family: Georgia, serif; text-transform: uppercase; letter-spacing: 2px; font-size: 1.15rem;">Prime</strong><span>E-COMMERCE HUB</span>
+      </div>
+    </a>
+    <nav class="cd-nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="learn.html">Courses</a>
+      <a href="contact.html">Contact</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+    <a href="apply.html" class="cd-enroll-btn" id="navEnrollBtn">Enroll Now</a>
+  </div>
+</header>
+
+<!-- COURSE HERO -->
+<section class="cd-hero" id="cdHero">
+  <div class="cd-hero-inner">
+    <div class="cd-breadcrumb">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <a href="index.html#courses">Courses</a>
+      <span>›</span>
+      <span id="cdBreadcrumbName">Course</span>
+    </div>
+
+    <div class="cd-hero-content">
+      <div class="cd-course-icon" id="cdIcon">&#128722;</div>
+      <div>
+        <div class="cd-badge" id="cdBadge">Professional Course</div>
+        <h1 id="cdTitle">Course Name</h1>
+        <p id="cdTagline">Course tagline goes here</p>
+
+        <div class="cd-hero-tags" id="cdTags"></div>
+
+        <div class="cd-hero-btns">
+          <a href="#" class="cd-btn-primary" id="cdEnrollBtn">&#127891; Enroll in This Course</a>
+          <a href="#cdCurriculum" class="cd-btn-outline">View Curriculum &#8595;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSE OVERVIEW CARDS -->
+<section class="cd-overview">
+  <div class="cd-container">
+    <div class="cd-overview-grid" id="cdOverviewGrid"></div>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="cd-container cd-main-layout">
+
+  <!-- LEFT COLUMN -->
+  <div class="cd-left">
+
+    <!-- About -->
+    <div class="cd-card" id="cdAboutCard">
+      <h2>About This Course</h2>
+      <p id="cdAbout"></p>
+    </div>
+
+    <!-- What You'll Learn -->
+    <div class="cd-card" id="cdLearnCard">
+      <h2>What You Will Learn</h2>
+      <div class="cd-learn-grid" id="cdLearnGrid"></div>
+    </div>
+
+    <!-- Curriculum -->
+    <div class="cd-card" id="cdCurriculum">
+      <h2>Course Curriculum</h2>
+      <div class="cd-modules" id="cdModules"></div>
+    </div>
+
+    <!-- Skills Gained -->
+    <div class="cd-card">
+      <h2>Skills You Will Gain</h2>
+      <div class="cd-skills-wrap" id="cdSkills"></div>
+    </div>
+
+    <!-- Who Is This For -->
+    <div class="cd-card">
+      <h2>Who Is This Course For?</h2>
+      <ul class="cd-for-list" id="cdForList"></ul>
+    </div>
+
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="cd-right">
+
+    <div class="cd-sticky-card">
+      <div class="cd-sticky-icon" id="cdStickyIcon">&#128722;</div>
+      <h3 id="cdStickyTitle">Course Name</h3>
+      <p id="cdStickyDesc">Short description</p>
+
+      <ul class="cd-sticky-perks">
+        <li>&#10003; Certificate on completion</li>
+        <li>&#10003; Live practical training</li>
+        <li>&#10003; Online &amp; Offline classes</li>
+        <li>&#10003; WhatsApp support group</li>
+        <li>&#10003; Expert instructor</li>
+        <li>&#10003; Real projects &amp; assignments</li>
+        <li>&#9201; Duration: 1.5 Months + 15 Days Internship</li>
+      </ul>
+
+      <a href="#" class="cd-btn-primary cd-sticky-btn" id="cdStickyEnroll">&#127891; Enroll Now</a>
+      <a href="contact.html" class="cd-contact-link">Have questions? Contact us &#8594;</a>
+    </div>
+
+    <!-- Other Courses -->
+    <div class="cd-other-courses">
+      <h4>Other Courses</h4>
+      <div id="cdOtherCourses"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="cd-logo" style="margin-bottom:14px; text-decoration: none;">
+        <div class="cd-logo-mark"><img src="images/logo.png" alt="Prime Ecommerce Hub" style="width:44px;height:44px;object-fit:contain;display:block;" /></div>
+        <div class="cd-logo-text"><strong style="color:#fff; font-family: Georgia, serif; text-transform: uppercase; letter-spacing: 2px; font-size: 1.15rem;">Prime</strong><span style="color:#cbd5e1">E-COMMERCE HUB</span></div>
+      </div>
+      <p style="color:#94a3b8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">Pakistan's dedicated e-commerce training platform.</p>
+      <div class="footer-social" style="display:flex; gap:12px;">
+        <a href="https://www.facebook.com/share/12L4jV4R9XQ/" target="_blank" aria-label="Facebook" style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: all 0.3s;"><img src="images/facebook.svg" width="16" height="16" alt="FB"></a>
+        <a href="https://www.instagram.com/prime_e_commerce_hub?igsh=MTZhNnIydzk1Y3o2" target="_blank" aria-label="Instagram" style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: all 0.3s;"><img src="images/instagram.svg" width="16" height="16" alt="IG"></a>
+        <a href="https://www.tiktok.com/@asifghafoor64?_t=ZS-90ArJZNPEgL&_r=1" target="_blank" aria-label="TikTok" style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: all 0.3s;"><img src="images/tiktok.svg" width="16" height="16" alt="TK"></a>
+        <a href="https://www.linkedin.com/in/asif-ghafoor-95671b257" target="_blank" aria-label="LinkedIn" style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: all 0.3s;"><img src="images/linkedin.svg" width="16" height="16" alt="LI"></a>
+        <a href="https://wa.me/923126772989" target="_blank" aria-label="WhatsApp" style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: all 0.3s;"><img src="images/whatsapp.svg" width="16" height="16" alt="WA"></a>
+      </div>
+    </div>
+    <div class="footer-col" style="display: flex; flex-direction: column; gap: 12px;">
+      <h4 style="color:#fff; font-size: 1.1rem; margin-bottom: 8px;">Courses</h4>
+      <a href="apply.html?course=Shopify+Mastery" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">Shopify Mastery</a>
+      <a href="apply.html?course=Amazon+FBA" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">Amazon FBA</a>
+      <a href="apply.html?course=Daraz+Selling" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">Daraz Selling</a>
+      <a href="apply.html?course=WordPress+Pro" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">WordPress Pro</a>
+      <a href="apply.html?course=Freelancing" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">Freelancing</a>
+    </div>
+    <div class="footer-col" style="display: flex; flex-direction: column; gap: 12px;">
+      <h4 style="color:#fff; font-size: 1.1rem; margin-bottom: 8px;">Quick Links</h4>
+      <a href="index.html" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">Home</a>
+      <a href="about.html" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">About</a>
+      <a href="services.html" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">Services</a>
+      <a href="contact.html" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">Contact</a>
+      <a href="dashboard.html" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">Dashboard</a>
+    </div>
+    <div class="footer-col" style="display: flex; flex-direction: column; gap: 12px;">
+      <h4 style="color:#fff; font-size: 1.1rem; margin-bottom: 8px;">Contact</h4>
+      <a href="tel:+923126772989" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">+92-312-6772989</a>
+      <a href="https://wa.me/923126772989" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">WhatsApp</a>
+      <a href="mailto:info@primeecommercehub.com" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">Email Us</a>
+      <span style="color:#94a3b8; font-size:0.9rem; line-height: 1.5;">Mujahid colony, St 1 Kacha Shahi Rd, Sadiqabad</span>
+    </div>
+  </div>
+  <div class="footer-bottom" style="text-align: center; padding-top: 30px; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); color:#64748b; font-size: 0.85rem;">
+    <p>&copy; 2026 Prime Ecommerce Hub. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<script src="js/course-detail.js"></script>
+  <script>  // Footer Rating
+  (function(){
+    const stars = document.querySelectorAll('#footerStars span');
+    const ratingMsg = document.getElementById('footerRatingMsg');
+    if(!stars.length) return;
+    const msgs = ['','Poor 😞','Fair 😐','Good 😊','Very Good 😄','Excellent! 🌟'];
+    stars.forEach(star => {
+      star.addEventListener('mouseover', () => {
+        const val = +star.dataset.val;
+        stars.forEach(s => s.classList.toggle('active', +s.dataset.val <= val));
+      });
+      star.addEventListener('mouseout', () => {
+        const selected = document.querySelector('#footerStars span.selected');
+        const selVal = selected ? +selected.dataset.val : 0;
+        stars.forEach(s => s.classList.toggle('active', +s.dataset.val <= selVal));
+      });
+      star.addEventListener('click', () => {
+        const val = +star.dataset.val;
+        stars.forEach(s => {
+          s.classList.toggle('active', +s.dataset.val <= val);
+          s.classList.toggle('selected', +s.dataset.val === val);
+        });
+        if(ratingMsg) ratingMsg.textContent = msgs[val];
+      });
+    });
+  })();</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

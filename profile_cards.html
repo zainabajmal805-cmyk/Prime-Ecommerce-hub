@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Profile Cards</title>
+  <meta name="description" content="Professional profile cards for team members" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #2563eb;
+      --primary-light: #3b82f6;
+      --primary-soft: #eff6ff;
+      --accent: #0ea5e9;
+      --success: #10b981;
+      --text-dark: #1e293b;
+      --text-mid: #475569;
+      --text-light: #94a3b8;
+      --bg: #f0f4f8;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --shadow: 0 4px 24px rgba(37,99,235,0.08);
+      --shadow-hover: 0 12px 40px rgba(37,99,235,0.18);
+      --radius: 20px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      padding: 40px 20px 60px;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 50px;
+      animation: fadeInDown 0.7s ease;
+    }
+
+    .page-header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+
+    .page-header p {
+      color: var(--text-mid);
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+    }
+
+    .header-line {
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #2563eb, #0ea5e9);
+      border-radius: 2px;
+      margin: 16px auto 0;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeInUp 0.6s ease both;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .card:nth-child(1)  { animation-delay: 0.05s; }
+    .card:nth-child(2)  { animation-delay: 0.12s; }
+    .card:nth-child(3)  { animation-delay: 0.19s; }
+    .card:nth-child(4)  { animation-delay: 0.26s; }
+    .card:nth-child(5)  { animation-delay: 0.33s; }
+    .card:nth-child(6)  { animation-delay: 0.40s; }
+    .card:nth-child(7)  { animation-delay: 0.47s; }
+    .card:nth-child(8)  { animation-delay: 0.54s; }
+    .card:nth-child(9)  { animation-delay: 0.61s; }
+
+    .card-banner {
+      height: 80px;
+      background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
+      position: relative;
+    }
+
+    .card-banner .seq-badge {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      background: rgba(255,255,255,0.22);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    .card-avatar {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      background: linear-gradient(135deg, #dbeafe, #bae6fd);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2563eb;
+      position: absolute;
+      bottom: -42px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 4px 16px rgba(37,99,235,0.2);
+      font-family: 'Outfit', sans-serif;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover .card-avatar {
+      transform: translateX(-50%) scale(1.08);
+    }
+
+    .card-banner-wrap { position: relative; }
+
+    .card-body {
+      padding: 55px 24px 28px;
+      text-align: center;
+    }
+
+    .card-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+
+    .card-role {
+      font-size: 0.82rem;
+      color: var(--primary);
+      font-weight: 600;
+      background: var(--primary-soft);
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      letter-spacing: 0.03em;
+    }
+
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+
+    .info-row:hover { background: var(--primary-soft); }
+
+    .info-row .icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .info-row .icon i {
+      color: #fff;
+      font-size: 0.78rem;
+    }
+
+    .info-row .info-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-row .info-label {
+      font-size: 0.68rem;
+      color: var(--text-light);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .info-row .info-value {
+      font-size: 0.88rem;
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+    .card-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 16px 0;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      color: var(--text-mid);
+      background: #f1f5f9;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      font-weight: 500;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <h1>Team Members</h1>
+    <p>Sab members ki information — sequence ke mutabiq</p>
+    <div class="header-line"></div>
+  </header>
+
+  <main class="cards-grid" id="cardsGrid"></main>
+
+  <script>
+    const members = [
+      {
+        seq: "01",
+        name: "Asif Ghafoor",
+        role: "Team Member",
+        phone: "+92 --- --- ----",
+        email: "asif@example.com",
+        city: "Pakistan",
+        tags: ["Active", "Member"]
+      },
+      {
+        seq: "02",
+        name: "Noman Memon",
+        role: "Team Member",
+        phone: "+92 --- --- ----",
+        email: "noman.memon@example.com",
+        city: "Pakistan",
+        tags: ["Active", "Member"]
+      },
+      {
+        seq: "03",
+        name: "Zaryab",
+        role: "Team Member",
+        phone: "+92 --- --- ----",
+        email: "zaryab@example.com",
+        city: "Pakistan",
+        tags: ["Active", "Member"]
+      },
+      {
+        seq: "04",
+        name: "Noman Ejaz",
+        role: "Team Member",
+        phone: "+92 --- --- ----",
+        email: "noman.ejaz@example.com",
+        city: "Pakistan",
+        tags: ["Active", "Member"]
+      },
+      {
+        seq: "05",
+        name: "M Saad",
+        role: "Team Member",
+        phone: "+92 --- --- ----",
+        email: "saad@example.com",
+        city: "Pakistan",
+        tags: ["Active", "Member"]
+      },
+      {
+        seq: "06",
+        name: "Sana Nadir",
+        role: "Team Member",
+        phone: "+92 --- --- ----",
+        email: "sana@example.com",
+        city: "Pakistan",
+        tags: ["Active", "Member"]
+      },
+      {
+        seq: "07",
+        name: "Fiza Shakeel",
+        role: "Team Member",
+        phone: "+92 --- --- ----",
+        email: "fiza@example.com",
+        city: "Pakistan",
+        tags: ["Active", "Member"]
+      },
+      {
+        seq: "08",
+        name: "Zainab Ajmal",
+        role: "Team Member",
+        phone: "+92 --- --- ----",
+        email: "zainab@example.com",
+        city: "Pakistan",
+        tags: ["Active", "Member"]
+      },
+      {
+        seq: "09",
+        name: "Fatima",
+        role: "Team Member",
+        phone: "+92 --- --- ----",
+        email: "fatima@example.com",
+        city: "Pakistan",
+        tags: ["Active", "Member"]
+      }
+    ];
+
+    function getInitials(name) {
+      return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    }
+
+    const grid = document.getElementById('cardsGrid');
+
+    members.forEach(m => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.setAttribute('id', 'member-' + m.seq);
+
+      card.innerHTML =
+        '<div class="card-banner-wrap">' +
+          '<div class="card-banner">' +
+            '<span class="seq-badge"># ' + m.seq + '</span>' +
+          '</div>' +
+          '<div class="card-avatar">' + getInitials(m.name) + '</div>' +
+        '</div>' +
+        '<div class="card-body">' +
+          '<h2 class="card-name">' + m.name + '</h2>' +
+          '<span class="card-role">' + m.role + '</span>' +
+          '<div class="card-info">' +
+            '<div class="info-row" id="phone-' + m.seq + '">' +
+              '<div class="icon"><i class="fas fa-phone"></i></div>' +
+              '<div class="info-text">' +
+                '<span class="info-label">Phone</span>' +
+                '<span class="info-value">' + m.phone + '</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="info-row" id="email-' + m.seq + '">' +
+              '<div class="icon"><i class="fas fa-envelope"></i></div>' +
+              '<div class="info-text">' +
+                '<span class="info-label">Email</span>' +
+                '<span class="info-value">' + m.email + '</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="info-row" id="city-' + m.seq + '">' +
+              '<div class="icon"><i class="fas fa-map-marker-alt"></i></div>' +
+              '<div class="info-text">' +
+                '<span class="info-label">Location</span>' +
+                '<span class="info-value">' + m.city + '</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="card-divider"></div>' +
+          '<div class="card-footer">' +
+            m.tags.map(function(t) { return '<span class="tag">' + t + '</span>'; }).join('') +
+          '</div>' +
+        '</div>';
+
+      grid.appendChild(card);
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,599 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enroll Now | Join E-commerce Courses | Prime Ecommerce Hub</title>
+  <meta name="description" content="Enroll in Prime Ecommerce Hub courses - Amazon FBA, Shopify, Daraz, WordPress, Freelancing, Digital Marketing and AI Tools. Online & Offline classes available in Pakistan." />
+  <meta name="keywords" content="enroll ecommerce course Pakistan, Amazon FBA enrollment, Shopify course apply, Daraz training, freelancing course signup, Prime Ecommerce Hub" />
+  <meta name="author" content="Prime Ecommerce Hub" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://primeecommercehub.com/apply.html" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Enroll Now | Prime Ecommerce Hub Courses" />
+  <meta property="og:description" content="Apply for Amazon, Shopify, Daraz, Freelancing and Digital Marketing courses at Prime Ecommerce Hub Pakistan." />
+  <meta property="og:url" content="https://primeecommercehub.com/apply.html" />
+  <meta property="og:site_name" content="Prime Ecommerce Hub" />
+  <meta property="og:image" content="images/logo.png" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Enroll Now | Prime Ecommerce Hub" />
+  <meta name="twitter:description" content="Apply for e-commerce courses in Pakistan. Amazon, Shopify, Daraz, Freelancing & more." />
+  <meta name="twitter:image" content="images/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/home2.css" />
+  <link rel="stylesheet" href="css/apply.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-mark"><img src="images/logo.png" alt="Prime Ecommerce Hub" style="width:44px;height:44px;object-fit:contain;display:block;" /></div>
+      <div class="logo-text">
+        <strong style="font-family: Georgia, serif; text-transform: uppercase; letter-spacing: 2px; font-size: 1.15rem;">Prime</strong><span>E-COMMERCE HUB</span>
+      </div>
+    </a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="learn.html">Courses</a>
+      <a href="contact.html">Contact</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+    <a href="apply.html" class="nav-enroll-btn active">Enroll Now</a>
+  </div>
+</header>
+
+
+<!-- HERO + STEPS -->
+<div class="ap-hero">
+  <div class="ap-hero-glow"></div>
+  <div class="ap-hero-inner">
+    <h1>Start Your Enrollment</h1>
+    <p>Fill in your details, select your course and submit payment proof to get enrolled.</p>
+
+    <!-- Step buttons — clickable -->
+    <div class="ap-steps">
+      <button class="ap-step active" id="step-ind-1" onclick="tryGoStep(1)">
+        <div class="ap-step-circle">1</div>
+        <span>Your Info</span>
+      </button>
+      <div class="ap-step-line"></div>
+      <button class="ap-step" id="step-ind-2" onclick="tryGoStep(2)">
+        <div class="ap-step-circle">2</div>
+        <span>Course</span>
+      </button>
+      <div class="ap-step-line"></div>
+      <button class="ap-step" id="step-ind-3" onclick="tryGoStep(3)">
+        <div class="ap-step-circle">3</div>
+        <span>Payment</span>
+      </button>
+      <div class="ap-step-line"></div>
+      <button class="ap-step" id="step-ind-4" onclick="tryGoStep(4)">
+        <div class="ap-step-circle">4</div>
+        <span>Confirm</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- BODY -->
+<div class="ap-body">
+  <div class="ap-container">
+
+    <!-- Course info banner (auto filled when course selected) -->
+    <div id="ap-course-banner-wrap"></div>
+
+    <div class="ap-layout">
+
+      <!-- LEFT: FORM -->
+      <div class="ap-form-wrap">
+
+        <!-- ===== STEP 1: Student Info ===== -->
+        <div class="ap-step-panel active" id="ap-step-1">
+          <div class="ap-panel-header">
+            <div class="ap-panel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <h2>Student Information</h2>
+              <p>Enter your details for admission registration and certificate.</p>
+            </div>
+          </div>
+
+          <div class="ap-grid-2">
+            <div class="ap-field">
+              <label>Full Name <span class="req">*</span></label>
+              <input type="text" id="ap-fullname" placeholder="Muhammad Ali Hassan" />
+            </div>
+            <div class="ap-field">
+              <label>Phone / WhatsApp <span class="req">*</span></label>
+              <input type="tel" id="ap-phone" placeholder="0300-1234567" />
+            </div>
+          </div>
+
+          <div class="ap-grid-2">
+            <div class="ap-field">
+              <label>Email Address <span class="req">*</span></label>
+              <input type="email" id="ap-email" placeholder="your@email.com" />
+            </div>
+            <div class="ap-field">
+              <label>CNIC / B-Form <span class="req">*</span></label>
+              <input type="text" id="ap-cnic" placeholder="35202-1234567-1" />
+              <small>Required for certificate verification</small>
+            </div>
+          </div>
+
+          <div class="ap-field">
+            <label>City <span class="req">*</span></label>
+            <input type="text" id="ap-city" placeholder="Sadiqabad, Rahim Yar Khan..." />
+          </div>
+
+          <div class="ap-field">
+            <label>About Yourself <span class="ap-opt">(optional)</span></label>
+            <textarea id="ap-about" rows="3" placeholder="Tell us your background and why you want to join..."></textarea>
+          </div>
+
+          <button class="ap-btn-primary" onclick="goStep(2)">
+            Continue — Select Course
+          </button>
+        </div>
+
+
+        <!-- ===== STEP 2: Course Selection ===== -->
+        <div class="ap-step-panel" id="ap-step-2">
+          <div class="ap-panel-header">
+            <div class="ap-panel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <div>
+              <h2>Select Your Course</h2>
+              <p>Choose the course you want to enroll in.</p>
+            </div>
+          </div>
+
+          <div class="ap-courses-grid">
+
+            <label class="ap-course-item">
+              <input type="radio" name="ap-course" value="Shopify Mastery" data-fee="17000" />
+              <div class="ap-ci-body">
+                <div class="ap-ci-top">
+                  <div class="ap-ci-icon ci-blue">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                  </div>
+                  <span class="ap-ci-hot">Popular</span>
+                </div>
+                <strong>Shopify Mastery</strong>
+                <p>Build and manage professional Shopify stores with live ads scaling.</p>
+                <small style="color:#8B0000;font-weight:700">Online: PKR 17,000 &nbsp;|&nbsp; Physical: PKR 20,000</small>
+                <div class="ap-ci-check">Selected</div>
+              </div>
+            </label>
+
+            <label class="ap-course-item">
+              <input type="radio" name="ap-course" value="Amazon FBA" data-fee="25000" />
+              <div class="ap-ci-body">
+                <div class="ap-ci-top">
+                  <div class="ap-ci-icon ci-amber">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+                  </div>
+                </div>
+                <strong>Amazon FBA</strong>
+                <p>Product research, FBA logistics, Helium10 and PPC campaigns.</p>
+                <small style="color:#8B0000;font-weight:700">Online: PKR 22,000 &nbsp;|&nbsp; Physical: PKR 25,000</small>
+                <div class="ap-ci-check">Selected</div>
+              </div>
+            </label>
+
+            <label class="ap-course-item">
+              <input type="radio" name="ap-course" value="Daraz Selling" data-fee="8000" />
+              <div class="ap-ci-body">
+                <div class="ap-ci-top">
+                  <div class="ap-ci-icon" style="background:#F85606;border-radius:10px;overflow:hidden;padding:0">
+                    <svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="40" height="40" fill="#F85606"/>
+                      <circle cx="20" cy="17" r="6" fill="none" stroke="white" stroke-width="2.8"/>
+                      <rect x="10" y="10" width="2.8" height="15" rx="1.2" fill="white"/>
+                      <text x="20" y="33" text-anchor="middle" fill="white" font-size="7" font-weight="800" font-family="Arial,sans-serif">daraz</text>
+                    </svg>
+                  </div>
+                </div>
+                <strong>Daraz Selling</strong>
+                <p>Store setup, catalog SEO, flash sales and order management.</p>
+                <small style="color:#8B0000;font-weight:700">Online: PKR 12,000 &nbsp;|&nbsp; Physical: PKR 15,000</small>
+                <div class="ap-ci-check">Selected</div>
+              </div>
+            </label>
+
+            <label class="ap-course-item">
+              <input type="radio" name="ap-course" value="WordPress Pro" data-fee="12000" />
+              <div class="ap-ci-body">
+                <div class="ap-ci-top">
+                  <div class="ap-ci-icon ci-teal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                  </div>
+                </div>
+                <strong>WordPress Pro</strong>
+                <p>Business websites and WooCommerce stores with full SEO.</p>
+                <small style="color:#8B0000;font-weight:700">Online: PKR 19,000 &nbsp;|&nbsp; Physical: PKR 22,000</small>
+                <div class="ap-ci-check">Selected</div>
+              </div>
+            </label>
+
+            <label class="ap-course-item">
+              <input type="radio" name="ap-course" value="Freelancing" data-fee="12000" />
+              <div class="ap-ci-body">
+                <div class="ap-ci-top">
+                  <div class="ap-ci-icon ci-purple">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+                  </div>
+                </div>
+                <strong>Freelancing</strong>
+                <p>Upwork, Fiverr and LinkedIn — earn in dollars from Pakistan.</p>
+                <small style="color:#8B0000;font-weight:700">Online: PKR 15,000 &nbsp;|&nbsp; Physical: PKR 18,000</small>
+                <div class="ap-ci-check">Selected</div>
+              </div>
+            </label>
+
+            <label class="ap-course-item">
+              <input type="radio" name="ap-course" value="Digital Marketing" data-fee="10000" />
+              <div class="ap-ci-body">
+                <div class="ap-ci-top">
+                  <div class="ap-ci-icon ci-green">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                  </div>
+                </div>
+                <strong>Digital Marketing</strong>
+                <p>Facebook, Instagram and Google Ads plus SEO strategy.</p>
+                <small style="color:#8B0000;font-weight:700">Online: PKR 12,000 &nbsp;|&nbsp; Physical: PKR 15,000</small>
+                <div class="ap-ci-check">Selected</div>
+              </div>
+            </label>
+
+            <label class="ap-course-item">
+              <input type="radio" name="ap-course" value="AI Tools" data-fee="8000" />
+              <div class="ap-ci-body">
+                <div class="ap-ci-top">
+                  <div class="ap-ci-icon ci-cyan">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                  </div>
+                </div>
+                <strong>AI Tools</strong>
+                <p>ChatGPT, Midjourney and AI automation for business growth.</p>
+                <small style="color:#8B0000;font-weight:700">Online: PKR 12,000 &nbsp;|&nbsp; Physical: PKR 15,000</small>
+                <div class="ap-ci-check">Selected</div>
+              </div>
+            </label>
+
+            <label class="ap-course-item">
+              <input type="radio" name="ap-course" value="SEO Basics" data-fee="6000" />
+              <div class="ap-ci-body">
+                <div class="ap-ci-top">
+                  <div class="ap-ci-icon ci-yellow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                  </div>
+                </div>
+                <strong>SEO Basics</strong>
+                <p>On-page, off-page SEO and Google ranking strategies.</p>
+                <small style="color:#8B0000;font-weight:700">Online: PKR 12,000 &nbsp;|&nbsp; Physical: PKR 15,000</small>
+                <div class="ap-ci-check">Selected</div>
+              </div>
+            </label>
+
+            <label class="ap-course-item">
+              <input type="radio" name="ap-course" value="Store Management" data-fee="10000" />
+              <div class="ap-ci-body">
+                <div class="ap-ci-top">
+                  <div class="ap-ci-icon ci-red">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M9 17H5a2 2 0 00-2 2v2h18v-2a2 2 0 00-2-2h-4M12 3v10M8 7l4-4 4 4"/></svg>
+                  </div>
+                </div>
+                <strong>Store Management</strong>
+                <p>Orders, inventory, CRM and daily e-commerce operations.</p>
+                <small style="color:#8B0000;font-weight:700">Online: PKR 12,000 &nbsp;|&nbsp; Physical: PKR 15,000</small>
+                <div class="ap-ci-check">Selected</div>
+              </div>
+            </label>
+
+            <label class="ap-course-item">
+              <input type="radio" name="ap-course" value="eBay Selling" data-fee="10000" />
+              <div class="ap-ci-body">
+                <div class="ap-ci-top">
+                  <div class="ap-ci-icon" style="background:#fff3e0;color:#e65100">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+                  </div>
+                </div>
+                <strong>eBay Selling</strong>
+                <p>List products on eBay, manage bids, shipping and grow your global seller profile.</p>
+                <small style="color:#8B0000;font-weight:700">Online: PKR 15,000 &nbsp;|&nbsp; Physical: PKR 18,000</small>
+                <div class="ap-ci-check">Selected</div>
+              </div>
+            </label>
+
+            <label class="ap-course-item">
+              <input type="radio" name="ap-course" value="Etsy Shop" data-fee="10000" />
+              <div class="ap-ci-body">
+                <div class="ap-ci-top">
+                  <div class="ap-ci-icon" style="background:#fce4ec;color:#c62828">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/><circle cx="12" cy="8" r="2"/></svg>
+                  </div>
+                </div>
+                <strong>Etsy Shop</strong>
+                <p>Create and grow an Etsy shop selling handmade, digital and vintage products globally.</p>
+                <small style="color:#8B0000;font-weight:700">Online: PKR 17,000 &nbsp;|&nbsp; Physical: PKR 20,000</small>
+                <div class="ap-ci-check">Selected</div>
+              </div>
+            </label>
+
+          </div>
+
+          <div class="ap-step-btns">
+            <button class="ap-btn-back" onclick="goStep(1)">Back</button>
+            <button class="ap-btn-primary" onclick="goStep(3)">Continue — Payment</button>
+          </div>
+        </div>
+
+
+        <!-- ===== STEP 3: Payment ===== -->
+        <div class="ap-step-panel" id="ap-step-3">
+          <div class="ap-panel-header">
+            <div class="ap-panel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            </div>
+            <div>
+              <h2>Fee Payment</h2>
+              <p>Transfer the fee and enter your transaction reference code.</p>
+            </div>
+          </div>
+
+          <!-- Payment Methods -->
+          <p class="ap-pay-label">Select Payment Method</p>
+          <div class="ap-pay-options">
+
+            <label class="ap-pay-opt">
+              <input type="radio" name="ap-payment" value="EasyPaisa" checked />
+              <div class="ap-po-body">
+                <div class="ap-po-logo" style="background:linear-gradient(135deg,#4caf50,#388e3c)">EP</div>
+                <div class="ap-po-info">
+                  <strong>EasyPaisa</strong>
+                  <span>Account: <b>0312-6772989</b></span>
+                  <span>Name: Prime Ecommerce Hub</span>
+                </div>
+                <button type="button" class="ap-copy-btn" onclick="copyText('0312-6772989',this)">Copy</button>
+                <span class="ap-po-check">&#10003;</span>
+              </div>
+            </label>
+
+            <label class="ap-pay-opt">
+              <input type="radio" name="ap-payment" value="HBL" />
+              <div class="ap-po-body">
+                <div class="ap-po-logo" style="background:linear-gradient(135deg,#00826b,#005c4b)">HBL</div>
+                <div class="ap-po-info">
+                  <strong>HBL Bank</strong>
+                  <span>Account: <b>24727000109003</b> (Placeholder)</span>
+                  <span>Name: Prime Ecommerce Hub</span>
+                </div>
+                <button type="button" class="ap-copy-btn" onclick="copyText('24727000109003',this)">Copy</button>
+                <span class="ap-po-check">&#10003;</span>
+              </div>
+            </label>
+
+          </div>
+
+          <!-- Barcode display -->
+          <div class="ap-barcode-box" style="margin-top:20px; text-align:center; padding:15px; border:1px dashed #cbd5e1; border-radius:12px; background:#f8fafc;">
+            <p style="font-size:0.9rem; margin-bottom:10px; font-weight:600; color:#1e293b;">Scan to Pay</p>
+            <img src="images/codebar.png" alt="Scan Barcode" style="max-width:200px; border-radius:8px; display:inline-block;" />
+            <p style="font-size:0.75rem; color:#64748b; margin-top:8px;">You can also scan this code to make a payment.</p>
+          </div>
+
+          <div class="ap-field" style="margin-top:20px">
+            <label>Transaction ID / Reference Code <span class="req">*</span></label>
+            <input type="text" id="ap-txn" placeholder="e.g. TXN-98421045 or 12-digit code" />
+            <small>Enter the transaction ID from your receipt</small>
+          </div>
+
+          <div class="ap-field" style="margin-top:15px">
+            <label>Upload Payment Screenshot <span class="req">*</span></label>
+            <input type="file" id="ap-screenshot" accept="image/*" style="padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; width: 100%; background: #fff;" />
+            <small>Please attach the screenshot of your successful transaction.</small>
+          </div>
+
+          <div class="ap-step-btns" style="margin-top:24px;">
+            <button class="ap-btn-back" onclick="goStep(2)">Back</button>
+            <button class="ap-btn-primary" onclick="submitApplication()">Submit Enrollment</button>
+          </div>
+
+          <!-- Pay Later Option -->
+          <div class="ap-pay-later-box">
+            <div class="ap-paylater-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            </div>
+            <div>
+              <strong>Apply Without Payment</strong>
+              <p>Submit your application now and pay later. Our team will contact you within 24 hours to arrange payment.</p>
+            </div>
+            <button class="ap-paylater-btn" onclick="submitWithoutPayment()">Apply Now, Pay Later</button>
+          </div>
+        </div>
+
+
+        <!-- ===== STEP 4: Confirmation ===== -->
+        <div class="ap-step-panel" id="ap-step-4">
+          <div class="ap-success-wrap">
+            <div class="ap-success-anim">&#127881;</div>
+            <h2>Enrollment Submitted!</h2>
+            <p>Your admission has been received. Our team will verify your payment within 24 hours.</p>
+
+            <div class="ap-slip" id="ap-confirm-details">
+              <!-- filled by JS -->
+            </div>
+
+            <div class="ap-whatsapp-note">
+              <div class="ap-wn-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              </div>
+              <div>
+                <strong>Join Student WhatsApp Group</strong>
+                <p>Join your batch group for class schedules, notes and instructor support.</p>
+                <a href="https://wa.me/923126772989" target="_blank" class="ap-wa-btn">
+                  Join WhatsApp Group
+                </a>
+              </div>
+            </div>
+
+            <div class="ap-success-btns">
+              <button class="ap-btn-back" onclick="window.print()">Print Slip</button>
+              <a href="index.html" class="ap-btn-primary">Back to Home</a>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /form-wrap -->
+
+
+      <!-- RIGHT: SIDEBAR -->
+      <aside class="ap-sidebar">
+
+        <div class="ap-sb-card">
+          <h3>Why Join Us?</h3>
+          <ul class="ap-sb-list">
+            <li>Certificate on completion</li>
+            <li>100% practical training</li>
+            <li>Expert instructors</li>
+            <li>WhatsApp support group</li>
+            <li>Online and offline classes</li>
+            <li>Job and freelance assistance</li>
+            <li>Lifetime access to materials</li>
+          </ul>
+        </div>
+
+        <div class="ap-sb-card" id="ap-selected-preview" style="display:none">
+          <h3>Selected Course</h3>
+          <div class="ap-sb-course">
+            <strong id="prev-name">—</strong>
+            <span id="prev-fee">—</span>
+          </div>
+        </div>
+
+        <div class="ap-sb-card">
+          <h3>Payment Accounts</h3>
+          <div class="ap-sb-payments">
+            <div class="ap-sbp-row">
+              <span class="ap-sbp-logo" style="background:linear-gradient(135deg,#4caf50,#388e3c)">EP</span>
+              <div>
+                <strong>EasyPaisa</strong>
+                <span>0312-6772989</span>
+              </div>
+            </div>
+            <div class="ap-sbp-row">
+              <span class="ap-sbp-logo" style="background:linear-gradient(135deg,#00826b,#005c4b)">HBL</span>
+              <div>
+                <strong>HBL Bank</strong>
+                <span>24727000109003</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ap-sb-card ap-sb-dark">
+          <h3>Need Help?</h3>
+          <p>Call or WhatsApp for admission or payment questions.</p>
+          <a href="tel:+923126772989" class="ap-sb-contact-btn">+92-312-6772989</a>
+          <a href="https://wa.me/923126772989" class="ap-sb-contact-btn" target="_blank" style="margin-top:8px">WhatsApp Chat</a>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/apply.js"></script>
+
+<script>
+  document.getElementById('hamburger').addEventListener('click', function() {
+    document.getElementById('navLinks').classList.toggle('open');
+    this.classList.toggle('active');
+  });
+</script>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="nav-logo" style="margin-bottom:14px">
+        <div class="logo-mark"><img src="images/logo.png" alt="Prime Ecommerce Hub" style="width:44px;height:44px;object-fit:contain;display:block;" /></div>
+        <div class="logo-text"><strong style="color:#fff; font-family: Georgia, serif; text-transform: uppercase; letter-spacing: 2px; font-size: 1.15rem;">Prime</strong><span>E-COMMERCE HUB</span></div>
+      </div>
+      <p>Pakistan's dedicated e-commerce training platform.</p>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/share/12L4jV4R9XQ/" target="_blank" aria-label="Facebook"><img src="images/facebook.svg" width="16" height="16" alt="FB"></a>
+        <a href="https://www.instagram.com/prime_e_commerce_hub?igsh=MTZhNnIydzk1Y3o2" target="_blank" aria-label="Instagram"><img src="images/instagram.svg" width="16" height="16" alt="IG"></a>
+        <a href="https://www.tiktok.com/@asifghafoor64?_t=ZS-90ArJZNPEgL&_r=1" target="_blank" aria-label="TikTok"><img src="images/tiktok.svg" width="16" height="16" alt="TK"></a>
+        <a href="https://www.linkedin.com/in/asif-ghafoor-95671b257" target="_blank" aria-label="LinkedIn"><img src="images/linkedin.svg" width="16" height="16" alt="LI"></a>
+        <a href="https://wa.me/923126772989" target="_blank" aria-label="WhatsApp"><img src="images/whatsapp.svg" width="16" height="16" alt="WA"></a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Courses</h4><a href="apply.html">Shopify Mastery</a><a href="apply.html">Amazon FBA</a><a href="apply.html">Daraz Selling</a><a href="apply.html">WordPress Pro</a><a href="apply.html">Freelancing</a></div>
+    <div class="footer-col"><h4>Quick Links</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="contact.html">Contact</a><a href="dashboard.html">Dashboard</a></div>
+    <div class="footer-col"><h4>Contact</h4><a href="tel:+923126772989">+92-312-6772989</a><a href="https://wa.me/923126772989">WhatsApp</a><a href="mailto:info@primeecommercehub.com">Email Us</a><span>Mujahid colony, St 1 Kacha Shahi Rd, Sadiqabad</span></div>
+  </div>
+  <div class="footer-rating">
+    <p class="footer-rating-title">Rate Your Experience</p>
+    <div class="footer-stars" id="footerStars">
+      <span data-val="1">&#9733;</span>
+      <span data-val="2">&#9733;</span>
+      <span data-val="3">&#9733;</span>
+      <span data-val="4">&#9733;</span>
+      <span data-val="5">&#9733;</span>
+    </div>
+    <p class="footer-rating-msg" id="footerRatingMsg"></p>
+  </div>
+
+  <div class="footer-bottom"><p>&copy; 2026 Prime Ecommerce Hub. All Rights Reserved.</p></div>
+</footer>
+  <script>  // Footer Rating
+  (function(){
+    const stars = document.querySelectorAll('#footerStars span');
+    const ratingMsg = document.getElementById('footerRatingMsg');
+    if(!stars.length) return;
+    const msgs = ['','Poor 😞','Fair 😐','Good 😊','Very Good 😄','Excellent! 🌟'];
+    stars.forEach(star => {
+      star.addEventListener('mouseover', () => {
+        const val = +star.dataset.val;
+        stars.forEach(s => s.classList.toggle('active', +s.dataset.val <= val));
+      });
+      star.addEventListener('mouseout', () => {
+        const selected = document.querySelector('#footerStars span.selected');
+        const selVal = selected ? +selected.dataset.val : 0;
+        stars.forEach(s => s.classList.toggle('active', +s.dataset.val <= selVal));
+      });
+      star.addEventListener('click', () => {
+        const val = +star.dataset.val;
+        stars.forEach(s => {
+          s.classList.toggle('active', +s.dataset.val <= val);
+          s.classList.toggle('selected', +s.dataset.val === val);
+        });
+        if(ratingMsg) ratingMsg.textContent = msgs[val];
+      });
+    });
+  })();</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
