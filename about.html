@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="css/home2.css" />
   <link rel="stylesheet" href="css/about.css" />
   <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="css/mobile.css" />
 </head>
 <body>
 
@@ -236,77 +237,68 @@
       <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;max-width:480px;margin:0 auto;">From learning to scaling — the 5 steps every student takes at Prime Ecommerce Hub.</p>
     </div>
 
-    <!-- Steps -->
-    <div style="display:flex;align-items:flex-start;justify-content:center;gap:0;flex-wrap:nowrap;">
+    <!-- Steps — responsive grid -->
+    <div class="journey-steps-wrap">
 
-      <!-- Step 1 -->
-      <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:160px;flex-shrink:0;">
-        <div style="font-size:1.4rem;font-weight:900;color:#e11d48;margin-bottom:10px;">01</div>
-        <div style="width:80px;height:80px;border:2px solid #e11d48;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+      <div class="journey-step">
+        <div class="journey-step-num">01</div>
+        <div class="journey-step-box">
           <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#e11d48" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
         </div>
-        <h3 style="font-size:0.95rem;font-weight:700;color:#fff;margin:0 0 6px;">Learn</h3>
-        <p style="font-size:0.74rem;color:rgba(255,255,255,0.65);line-height:1.4;margin:0;">Master e-commerce skills through practical training.</p>
+        <h3 class="journey-step-title">Learn</h3>
+        <p class="journey-step-desc">Master e-commerce skills through practical training.</p>
       </div>
 
-      <!-- Arrow -->
-      <div style="display:flex;align-items:center;padding-top:44px;flex-shrink:0;width:44px;justify-content:center;">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#e11d48" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      <div class="journey-arrow">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#e11d48" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </div>
 
-      <!-- Step 2 -->
-      <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:160px;flex-shrink:0;">
-        <div style="font-size:1.4rem;font-weight:900;color:#e11d48;margin-bottom:10px;">02</div>
-        <div style="width:80px;height:80px;border:2px solid #e11d48;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+      <div class="journey-step">
+        <div class="journey-step-num">02</div>
+        <div class="journey-step-box">
           <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#e11d48" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         </div>
-        <h3 style="font-size:0.95rem;font-weight:700;color:#fff;margin:0 0 6px;">Practice</h3>
-        <p style="font-size:0.74rem;color:rgba(255,255,255,0.65);line-height:1.4;margin:0;">Work on real stores and live accounts.</p>
+        <h3 class="journey-step-title">Practice</h3>
+        <p class="journey-step-desc">Work on real stores and live accounts.</p>
       </div>
 
-      <!-- Arrow -->
-      <div style="display:flex;align-items:center;padding-top:44px;flex-shrink:0;width:44px;justify-content:center;">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#e11d48" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      <div class="journey-arrow">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#e11d48" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </div>
 
-      <!-- Step 3 -->
-      <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:160px;flex-shrink:0;">
-        <div style="font-size:1.4rem;font-weight:900;color:#e11d48;margin-bottom:10px;">03</div>
-        <div style="width:80px;height:80px;border:2px solid #e11d48;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+      <div class="journey-step">
+        <div class="journey-step-num">03</div>
+        <div class="journey-step-box">
           <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#e11d48" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         </div>
-        <h3 style="font-size:0.95rem;font-weight:700;color:#fff;margin:0 0 6px;">Launch</h3>
-        <p style="font-size:0.74rem;color:rgba(255,255,255,0.65);line-height:1.4;margin:0;">Set up your own store or freelance profile.</p>
+        <h3 class="journey-step-title">Launch</h3>
+        <p class="journey-step-desc">Set up your own store or freelance profile.</p>
       </div>
 
-      <!-- Arrow -->
-      <div style="display:flex;align-items:center;padding-top:44px;flex-shrink:0;width:44px;justify-content:center;">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#e11d48" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      <div class="journey-arrow">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#e11d48" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </div>
 
-      <!-- Step 4 -->
-      <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:160px;flex-shrink:0;">
-        <div style="font-size:1.4rem;font-weight:900;color:#e11d48;margin-bottom:10px;">04</div>
-        <div style="width:80px;height:80px;border:2px solid #e11d48;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+      <div class="journey-step">
+        <div class="journey-step-num">04</div>
+        <div class="journey-step-box">
           <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#e11d48" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         </div>
-        <h3 style="font-size:0.95rem;font-weight:700;color:#fff;margin:0 0 6px;">Grow</h3>
-        <p style="font-size:0.74rem;color:rgba(255,255,255,0.65);line-height:1.4;margin:0;">Run campaigns and increase your sales.</p>
+        <h3 class="journey-step-title">Grow</h3>
+        <p class="journey-step-desc">Run campaigns and increase your sales.</p>
       </div>
 
-      <!-- Arrow -->
-      <div style="display:flex;align-items:center;padding-top:44px;flex-shrink:0;width:44px;justify-content:center;">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#e11d48" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      <div class="journey-arrow">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#e11d48" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </div>
 
-      <!-- Step 5 -->
-      <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:160px;flex-shrink:0;">
-        <div style="font-size:1.4rem;font-weight:900;color:#e11d48;margin-bottom:10px;">05</div>
-        <div style="width:80px;height:80px;border:2px solid #e11d48;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+      <div class="journey-step">
+        <div class="journey-step-num">05</div>
+        <div class="journey-step-box">
           <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#e11d48" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
         </div>
-        <h3 style="font-size:0.95rem;font-weight:700;color:#fff;margin:0 0 6px;">Scale</h3>
-        <p style="font-size:0.74rem;color:rgba(255,255,255,0.65);line-height:1.4;margin:0;">Expand with ongoing support and mentorship.</p>
+        <h3 class="journey-step-title">Scale</h3>
+        <p class="journey-step-desc">Expand with ongoing support and mentorship.</p>
       </div>
 
     </div>

@@ -53,6 +53,10 @@
 .ab-intro-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 56px; align-items: center; }
 .ab-intro-content h2 { font-size: clamp(1.8rem,3.5vw,2.6rem); font-weight: 800; color: #0f172a; letter-spacing: -0.04em; margin-bottom: 16px; }
 .ab-intro-content p { color: #475569; line-height: 1.8; font-size: 0.96rem; margin-bottom: 14px; }
+
+@media (max-width: 900px) {
+  .ab-intro-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+}
 .ab-intro-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
 .ab-intro-badges span {
   padding: 5px 14px; border-radius: 8px; background: #fff1f2;
@@ -221,6 +225,10 @@
   position: relative; z-index: 2;
 }
 
+@media (max-width: 900px) {
+  .ab-mv-two { grid-template-columns: 1fr !important; }
+}
+
 .ab-mv-box {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
@@ -307,6 +315,10 @@
   grid-template-columns: 0.8fr 1.2fr;
   gap: 56px;
   align-items: center;
+}
+
+@media (max-width: 900px) {
+  .founder-layout { grid-template-columns: 1fr !important; gap: 36px !important; }
 }
 
 /* Founder Image Box */
@@ -1122,6 +1134,10 @@
   z-index: 1;
 }
 
+@media (max-width: 1100px) { .ab-team-grid { grid-template-columns: repeat(3, 1fr) !important; } }
+@media (max-width: 768px)  { .ab-team-grid { grid-template-columns: repeat(2, 1fr) !important; padding: 0 16px !important; gap: 14px !important; } }
+@media (max-width: 480px)  { .ab-team-grid { grid-template-columns: 1fr !important; max-width: 320px !important; margin: 0 auto !important; } }
+
 .ab-team-card {
   position: relative;
   background: #fff;
@@ -1734,4 +1750,82 @@
 
 @media (max-width: 1024px) {
   .ab-testi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+
+/* ── JOURNEY STEPS (responsive) ── */
+.journey-steps-wrap {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.journey-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.journey-step-num {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #e11d48;
+  margin-bottom: 10px;
+}
+
+.journey-step-box {
+  width: 76px;
+  height: 76px;
+  border: 2px solid #e11d48;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.journey-step-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 5px;
+}
+
+.journey-step-desc {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.journey-arrow {
+  display: flex;
+  align-items: center;
+  padding-top: 42px;
+  width: 36px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .journey-steps-wrap {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 16px !important;
+    justify-items: center;
+  }
+  .journey-arrow { display: none !important; }
+  .journey-step  { width: 100% !important; }
+}
+
+@media (max-width: 480px) {
+  .journey-steps-wrap {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
 }
