@@ -891,3 +891,122 @@ document.addEventListener('DOMContentLoaded', function() {
   loadMessages();
   loadAttendanceStudents();
 });
+
+// ========================
+// STUDENT REVIEWS
+// ========================
+function switchReviewTab(btn, status) {
+  document.querySelectorAll('.db-rtab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderReviews(status);
+}
+
+function getReviews() {
+  return JSON.parse(localStorage.getItem('allReviews') || '[]');
+}
+
+function saveReviews(reviews) {
+  localStorage.setItem('allReviews', JSON.stringify(reviews));
+}
+
+function renderReviews(status = 'pending') {
+  const list = document.getElementById('reviews-list');
+  if (!list) return;
+  const reviews = getReviews().filter(r => r.status === status);
+
+  // Update counts
+  const all = getReviews();
+  ['pending','approved','rejected'].forEach(s => {
+    const el = document.getElementById('count-' + s);
+    if (el) el.textContent = all.filter(r => r.status === s).length;
+  });
+
+  if (reviews.length === 0) {
+    list.innerHTML = `<p style="color:#94a3b8;text-align:center;padding:32px 0;font-size:0.9rem;">No ${status} reviews.</p>`;
+    return;
+  }
+
+  list.innerHTML = reviews.map((r, i) => {
+    const idx = getReviews().findIndex(x => x.id === r.id);
+    const stars = '★'.repeat(parseInt(r.rating || 5));
+    return `
+    <div style="border:1px solid #e2e8f0;border-radius:14px;padding:20px;margin-bottom:14px;background:#fafafa;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <strong style="color:#0f172a;font-size:0.96rem;">${r.name}</strong>
+            <span style="background:#fff1f2;color:#e11d48;font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:5px;">${r.course}</span>
+            <span style="color:#D4AF37;font-size:0.9rem;">${stars}</span>
+          </div>
+          <p style="color:#475569;font-size:0.88rem;line-height:1.65;margin:0 0 8px;">"${r.review}"</p>
+          <span style="color:#94a3b8;font-size:0.76rem;">${r.date || ''}</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;">
+          ${status === 'pending' ? `
+          <button onclick="approveReview('${r.id}')" style="padding:7px 14px;border-radius:8px;background:#16a34a;color:#fff;border:none;font-size:0.8rem;font-weight:700;cursor:pointer;">Approve</button>
+          <button onclick="rejectReview('${r.id}')" style="padding:7px 14px;border-radius:8px;background:#dc2626;color:#fff;border:none;font-size:0.8rem;font-weight:700;cursor:pointer;">Reject</button>
+          ` : ''}
+          ${status === 'approved' ? `
+          <button onclick="rejectReview('${r.id}')" style="padding:7px 14px;border-radius:8px;background:#dc2626;color:#fff;border:none;font-size:0.8rem;font-weight:700;cursor:pointer;">Reject</button>
+          ` : ''}
+          ${status === 'rejected' ? `
+          <button onclick="approveReview('${r.id}')" style="padding:7px 14px;border-radius:8px;background:#16a34a;color:#fff;border:none;font-size:0.8rem;font-weight:700;cursor:pointer;">Approve</button>
+          ` : ''}
+          <button onclick="deleteReview('${r.id}')" style="padding:7px 14px;border-radius:8px;background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0;font-size:0.8rem;font-weight:700;cursor:pointer;">Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function approveReview(id) {
+  const reviews = getReviews();
+  const r = reviews.find(x => x.id === id);
+  if (r) { r.status = 'approved'; saveReviews(reviews); }
+  const activeTab = document.querySelector('.db-rtab.active');
+  const status = activeTab ? activeTab.textContent.trim().toLowerCase().split(' ')[0] : 'pending';
+  renderReviews(status);
+  showToast('Review approved ✓', 'success');
+}
+
+function rejectReview(id) {
+  const reviews = getReviews();
+  const r = reviews.find(x => x.id === id);
+  if (r) { r.status = 'rejected'; saveReviews(reviews); }
+  const activeTab = document.querySelector('.db-rtab.active');
+  const status = activeTab ? activeTab.textContent.trim().toLowerCase().split(' ')[0] : 'pending';
+  renderReviews(status);
+  showToast('Review rejected', 'error');
+}
+
+function deleteReview(id) {
+  if (!confirm('Delete this review permanently?')) return;
+  const reviews = getReviews().filter(x => x.id !== id);
+  saveReviews(reviews);
+  const activeTab = document.querySelector('.db-rtab.active');
+  const status = activeTab ? activeTab.textContent.trim().toLowerCase().split(' ')[0] : 'pending';
+  renderReviews(status);
+  showToast('Review deleted', 'error');
+}
+
+// Migrate pending reviews from review-form submissions
+function migratePendingReviews() {
+  const pending = JSON.parse(localStorage.getItem('pendingReviews') || '[]');
+  if (pending.length === 0) return;
+  const all = getReviews();
+  pending.forEach(r => {
+    if (!r.id) r.id = 'rv_' + Date.now() + '_' + Math.random().toString(36).substr(2,5);
+    if (!all.find(x => x.id === r.id)) all.push(r);
+  });
+  saveReviews(all);
+  localStorage.removeItem('pendingReviews');
+}
+
+// Init reviews on page load
+document.addEventListener('DOMContentLoaded', () => {
+  migratePendingReviews();
+  // Render when reviews section is opened
+  document.querySelector('.db-nav-link[data-section="reviews"]')?.addEventListener('click', () => {
+    setTimeout(() => renderReviews('pending'), 50);
+  });
+});

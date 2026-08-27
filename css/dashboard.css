@@ -439,3 +439,48 @@ body.dark-mode .db-bar{background:linear-gradient(180deg,#f43f5e,#be123c)}
   /* topbar user text hide */
   .db-user span{display:none}
 }
+
+
+/* ── REVIEW TABS ── */
+.db-review-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.db-rtab {
+  padding: 8px 18px;
+  border-radius: 10px;
+  border: 1.5px solid #e2e8f0;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+}
+
+.db-rtab:hover { border-color: #e11d48; color: #e11d48; }
+
+.db-rtab.active {
+  background: #e11d48;
+  border-color: #e11d48;
+  color: #fff;
+}
+
+.db-rtab-count {
+  background: rgba(255,255,255,0.25);
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.db-rtab:not(.active) .db-rtab-count {
+  background: #e2e8f0;
+  color: #475569;
+}
