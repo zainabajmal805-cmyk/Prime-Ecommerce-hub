@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Share Your Review | Prime Ecommerce Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/home2.css" />
+  <style>
+    body { background: #f1f5f9; }
+
+    .rf-wrap {
+      min-height: calc(100vh - 70px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+    }
+
+    .rf-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 8px 32px rgba(15,23,42,0.08);
+    }
+
+    .rf-card h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .rf-card > p {
+      color: #64748b;
+      font-size: 0.88rem;
+      margin-bottom: 28px;
+    }
+
+    .rf-field { margin-bottom: 18px; }
+
+    .rf-field label {
+      display: block;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .rf-field label .req { color: #e11d48; }
+
+    .rf-field input,
+    .rf-field select,
+    .rf-field textarea {
+      width: 100%;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      color: #0f172a;
+      background: #f8fafc;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+
+    .rf-field input:focus,
+    .rf-field select:focus,
+    .rf-field textarea:focus { border-color: #e11d48; background: #fff; }
+
+    .rf-field textarea { resize: vertical; min-height: 100px; }
+
+    /* Star rating */
+    .rf-stars {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .rf-stars input { display: none; }
+
+    .rf-stars label {
+      font-size: 1.8rem;
+      color: #e2e8f0;
+      cursor: pointer;
+      transition: color 0.15s;
+      margin: 0;
+    }
+
+    .rf-stars input:checked ~ label,
+    .rf-stars label:hover,
+    .rf-stars label:hover ~ label { color: #D4AF37; }
+
+    .rf-stars { flex-direction: row-reverse; }
+    .rf-stars label:hover,
+    .rf-stars label:hover ~ label { color: #D4AF37; }
+
+    /* File upload */
+    .rf-file-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 10px;
+      border: 1.5px dashed #cbd5e1;
+      color: #64748b;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+      background: #f8fafc;
+    }
+
+    .rf-file-label:hover { border-color: #e11d48; color: #e11d48; }
+    .rf-file-input { display: none; }
+    .rf-file-name { font-size: 0.78rem; color: #94a3b8; margin-top: 5px; }
+
+    /* Consent */
+    .rf-consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .rf-consent input[type="checkbox"] {
+      width: 18px; height: 18px;
+      accent-color: #e11d48;
+      flex-shrink: 0;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    .rf-consent label {
+      font-size: 0.82rem;
+      color: #475569;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+
+    /* Submit */
+    .rf-submit {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #e11d48, #be123c);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.96rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(225,29,72,0.3);
+      transition: opacity 0.15s, transform 0.15s;
+      font-family: inherit;
+    }
+
+    .rf-submit:hover { opacity: 0.9; transform: translateY(-2px); }
+
+    /* Success message */
+    .rf-success {
+      display: none;
+      text-align: center;
+      padding: 32px 20px;
+    }
+
+    .rf-success-icon {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: #f0fdf4;
+      border: 2px solid #86efac;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 1.8rem;
+    }
+
+    .rf-success h2 { font-size: 1.3rem; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
+    .rf-success p { color: #64748b; font-size: 0.9rem; line-height: 1.7; }
+
+    .rf-back {
+      display: inline-block;
+      margin-top: 20px;
+      color: #e11d48;
+      font-weight: 600;
+      font-size: 0.88rem;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-mark"><img src="images/logo.png" alt="Prime Ecommerce Hub" style="width:44px;height:44px;object-fit:contain;display:block;" /></div>
+      <div class="logo-text">
+        <strong style="font-family:Georgia,serif;text-transform:uppercase;letter-spacing:2px;font-size:1.15rem;">Prime</strong>
+        <span>E-COMMERCE HUB</span>
+      </div>
+    </a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <div class="nav-dropdown">
+        <a href="learn.html" class="nav-dropdown-trigger">Courses <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown-menu">
+          <a href="learn.html">Courses</a>
+          <a href="internship.html">Internship</a>
+        </div>
+      </div>
+      <a href="events.html">Events</a>
+      <a href="contact.html">Contact</a>
+      <a href="dashboard.html">Admin Login</a>
+    </nav>
+    <a href="apply.html" class="nav-enroll-btn">Enroll Now</a>
+  </div>
+</header>
+
+<div class="rf-wrap">
+  <div class="rf-card">
+
+    <!-- FORM -->
+    <div id="rf-form-section">
+      <h1>Share Your Experience</h1>
+      <p>Your honest feedback helps other students and improves our training.</p>
+
+      <form id="reviewForm" onsubmit="submitReview(event)">
+
+        <div class="rf-field">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="rf-name" placeholder="Your full name" required />
+        </div>
+
+        <div class="rf-field">
+          <label>Course <span class="req">*</span></label>
+          <select id="rf-course" required>
+            <option value="">Select your course</option>
+            <option>Amazon FBA</option>
+            <option>Shopify</option>
+            <option>Daraz</option>
+            <option>WordPress</option>
+            <option>Digital Marketing</option>
+            <option>SEO</option>
+            <option>Freelancing</option>
+            <option>AI Tools</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="rf-field">
+          <label>Rating <span class="req">*</span></label>
+          <div class="rf-stars">
+            <input type="radio" name="rating" id="s5" value="5" required /><label for="s5">&#9733;</label>
+            <input type="radio" name="rating" id="s4" value="4" /><label for="s4">&#9733;</label>
+            <input type="radio" name="rating" id="s3" value="3" /><label for="s3">&#9733;</label>
+            <input type="radio" name="rating" id="s2" value="2" /><label for="s2">&#9733;</label>
+            <input type="radio" name="rating" id="s1" value="1" /><label for="s1">&#9733;</label>
+          </div>
+        </div>
+
+        <div class="rf-field">
+          <label>Your Experience <span class="req">*</span></label>
+          <textarea id="rf-review" placeholder="Tell us about your learning experience at Prime Ecommerce Hub..." required></textarea>
+        </div>
+
+        <div class="rf-field">
+          <label>Upload Photo</label>
+          <label class="rf-file-label" for="rf-photo">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Choose Image
+          </label>
+          <input type="file" id="rf-photo" class="rf-file-input" accept="image/*" onchange="showFileName(this)" />
+          <div class="rf-file-name" id="rf-file-name">No file chosen</div>
+        </div>
+
+        <div class="rf-consent">
+          <input type="checkbox" id="rf-consent" required />
+          <label for="rf-consent">I agree to have my name, photo and review displayed on the website after approval.</label>
+        </div>
+
+        <button type="submit" class="rf-submit">Submit Review</button>
+
+      </form>
+    </div>
+
+    <!-- SUCCESS MESSAGE -->
+    <div class="rf-success" id="rf-success">
+      <div class="rf-success-icon">&#10003;</div>
+      <h2>Thank You!</h2>
+      <p>Your review has been submitted and is <strong>awaiting approval</strong>.<br>It will appear on the website once reviewed by our team.</p>
+      <a href="learn.html" class="rf-back">&#8592; Back to Courses</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  document.getElementById('hamburger').addEventListener('click', function() {
+    document.getElementById('navLinks').classList.toggle('open');
+    this.classList.toggle('active');
+  });
+
+  function showFileName(input) {
+    const name = input.files[0] ? input.files[0].name : 'No file chosen';
+    document.getElementById('rf-file-name').textContent = name;
+  }
+
+  function submitReview(e) {
+    e.preventDefault();
+
+    // Collect form data
+    const review = {
+      name: document.getElementById('rf-name').value,
+      course: document.getElementById('rf-course').value,
+      rating: document.querySelector('input[name="rating"]:checked')?.value || '5',
+      review: document.getElementById('rf-review').value,
+      status: 'pending',
+      date: new Date().toLocaleDateString('en-GB')
+    };
+
+    // Save to localStorage (frontend only — replace with API call for real backend)
+    const reviews = JSON.parse(localStorage.getItem('pendingReviews') || '[]');
+    reviews.push(review);
+    localStorage.setItem('pendingReviews', JSON.stringify(reviews));
+
+    // Show success
+    document.getElementById('rf-form-section').style.display = 'none';
+    document.getElementById('rf-success').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
