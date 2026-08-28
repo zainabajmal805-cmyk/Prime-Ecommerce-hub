@@ -303,7 +303,28 @@
   </div>
 </div>
 
-<script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAiqN9v4p7MoS7vbH3vFXBwQd3MLcLeXfo",
+    authDomain: "primeecommercehub.firebaseapp.com",
+    projectId: "primeecommercehub",
+    storageBucket: "primeecommercehub.firebasestorage.app",
+    messagingSenderId: "658801275706",
+    appId: "1:658801275706:web:451eea614f832ffe881603"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Expose db to window so submitReview() can use it
+  window._firebaseDb = db;
+  window._firebaseAddDoc = addDoc;
+  window._firebaseCollection = collection;
+  window._firebaseServerTimestamp = serverTimestamp;
+
   document.getElementById('hamburger').addEventListener('click', function() {
     document.getElementById('navLinks').classList.toggle('open');
     this.classList.toggle('active');
@@ -313,55 +334,61 @@
     const name = input.files[0] ? input.files[0].name : 'No file chosen';
     document.getElementById('rf-file-name').textContent = name;
   }
+  window.showFileName = showFileName;
+</script>
 
-  function submitReview(e) {
-    e.preventDefault();
+<script>
+  function submitReview(event) {
+    event.preventDefault();
 
-    const submitBtn = document.querySelector('.rf-submit');
-    submitBtn.textContent = 'Submitting...';
-    submitBtn.disabled = true;
-
+    const name   = document.getElementById('rf-name')?.value.trim();
+    const course = document.getElementById('rf-course')?.value.trim();
+    const review = document.getElementById('rf-review')?.value.trim();
     const rating = document.querySelector('input[name="rating"]:checked')?.value || '5';
-    const stars = '★'.repeat(parseInt(rating));
 
-    // Also save to localStorage for same-browser admin
-    const review = {
-      id: 'rv_' + Date.now() + '_' + Math.random().toString(36).substr(2,5),
-      name: document.getElementById('rf-name').value,
-      course: document.getElementById('rf-course').value,
+    if (!name || !course || !review) {
+      alert('Please fill all required fields.');
+      return false;
+    }
+
+    const newReview = {
+      id:     'rv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+      name:   name,
+      course: course,
       rating: rating,
-      review: document.getElementById('rf-review').value,
-      status: 'approved',
-      date: new Date().toLocaleDateString('en-GB')
+      review: review,
+      status: 'pending',
+      date:   new Date().toLocaleDateString('en-GB')
     };
+
+    // Save to localStorage
     const reviews = JSON.parse(localStorage.getItem('allReviews') || '[]');
-    reviews.push(review);
+    reviews.push(newReview);
     localStorage.setItem('allReviews', JSON.stringify(reviews));
 
-    // Send to Formspree (replace YOUR_FORM_ID with your actual Formspree form ID)
-    const formData = new FormData();
-    formData.append('name', review.name);
-    formData.append('course', review.course);
-    formData.append('rating', stars + ' (' + rating + '/5)');
-    formData.append('review', review.review);
-    formData.append('date', review.date);
-    formData.append('_subject', 'New Student Review — ' + review.name);
+    // Also save to Firebase if available
+    if (window._firebaseDb && window._firebaseAddDoc) {
+      window._firebaseAddDoc(
+        window._firebaseCollection(window._firebaseDb, 'reviews'),
+        {
+          name:      name,
+          course:    course,
+          rating:    Number(rating),
+          review:    review,
+          status:    'pending',
+          createdAt: window._firebaseServerTimestamp()
+        }
+      ).catch(err => console.error('Firebase error:', err));
+    }
 
-    fetch('https://formspree.io/f/YOUR_FORM_ID', {
-      method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'application/json' }
-    })
-    .then(res => {
-      // Show success regardless (localStorage already saved)
-      document.getElementById('rf-form-section').style.display = 'none';
-      document.getElementById('rf-success').style.display = 'block';
-    })
-    .catch(() => {
-      // Still show success since localStorage saved
-      document.getElementById('rf-form-section').style.display = 'none';
-      document.getElementById('rf-success').style.display = 'block';
-    });
+    // Show success
+    const formSection    = document.getElementById('rf-form-section');
+    const successSection = document.getElementById('rf-success');
+    if (formSection)    formSection.style.display    = 'none';
+    if (successSection) successSection.style.display = 'block';
+
+    console.log('Review saved:', newReview);
+    return false;
   }
 </script>
 

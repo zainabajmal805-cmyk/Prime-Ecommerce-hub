@@ -1,27 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAiqN9v4p7MoS7vbH3vFXBwQd3MLcLeXfo",
-  authDomain: "primeecommercehub.firebaseapp.com",
-  projectId: "primeecommercehub",
-  storageBucket: "primeecommercehub.firebasestorage.app",
-  messagingSenderId: "658801275706",
-  appId: "1:658801275706:web:451eea614f832ffe881603",
-  measurementId: "G-Q6JG26T3LC"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// Expose globals for HTML inline events
-Object.assign(window, {
-  showModal: (id) => { const m = document.getElementById(id); if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; } },
-  closeModal: (id) => { const m = document.getElementById(id); if (m) { m.classList.remove('open'); document.body.style.overflow = ''; } },
-  filterTable: (s, t) => { const f = s.value.toLowerCase(); document.querySelectorAll(`#${t} tbody tr`).forEach(r => r.style.display = (!f || r.textContent.toLowerCase().includes(f)) ? '' : 'none'); },
-  searchTable: (i, t) => { const f = i.value.toLowerCase(); document.querySelectorAll(`#${t} tbody tr`).forEach(r => r.style.display = r.textContent.toLowerCase().includes(f) ? '' : 'none'); }
-});
-
 /* ============================================================
    DASHBOARD.JS — Complete Working Version
    ============================================================ */
@@ -626,134 +602,95 @@ function openFreelancerProfile(name, id, skill, platform, projects, earnings, ra
 }
 
 
-// =====================================
-// LOAD ADMISSIONS FROM FIREBASE
-// =====================================
+// ========================
+// LOAD WEBSITE APPLICATIONS
+// ========================
+function loadWebsiteApplications() {
+  const apps  = JSON.parse(localStorage.getItem('ph_applications') || '[]');
+  if (!apps.length) return;
 
-async function loadAdmissions() {
-  const tbody = document.querySelector("#adm-table tbody");
+  const admTbody = document.querySelector('#adm-table tbody');
+  const stdTbody = document.querySelector('#std-table tbody');
+  const actTbody = document.querySelector('#sec-overview .db-table tbody');
 
-  if (!tbody) return;
+  apps.forEach((app, i) => {
+    if (app.status === 'Approved' && stdTbody) {
+      addApprovedToStudents(app, false);
+    }
+    const statusCls = app.status === 'Approved' ? 'green'
+                    : app.status === 'Rejected' ? 'red' : 'amber';
 
-  tbody.innerHTML = `
-    <tr>
-      <td colspan="6" style="text-align:center;">
-        Loading applications...
-      </td>
-    </tr>
-  `;
-
-  try {
-    const snapshot = await getDocs(collection(db, "applications"));
-
-    tbody.innerHTML = "";
-
-    if (snapshot.empty) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="6" style="text-align:center;">
-            No applications yet
-          </td>
-        </tr>
-      `;
-      return;
+    // Add to Admissions table
+    if (admTbody) {
+      // avoid duplicates by checking txn
+      if (!admTbody.querySelector(`[data-txn="${app.txn}"]`)) {
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-txn', app.txn);
+        tr.innerHTML = `
+          <td>${app.name}</td>
+          <td>${app.email}</td>
+          <td>${app.course}</td>
+          <td>${app.date}</td>
+          <td><span class="db-pill ${statusCls}">${app.status}</span></td>
+          <td>
+            <span style="font-size:.74rem;color:#64748b;display:block;margin-bottom:4px">💰 ${app.payment} · ${app.txn}</span>
+            <button class="db-btn-sm">Review</button>
+            <button class="db-btn-sm" style="color:#2563eb; border-color:#2563eb; margin-left:4px" onclick="editAdmission('${app.txn}')">Edit</button>
+            <button class="db-btn-sm" style="color:#ef4444; border-color:#ef4444; margin-left:4px" onclick="deleteAdmission('${app.txn}')">Delete</button>
+          </td>`;
+        admTbody.appendChild(tr);
+      }
     }
 
-    snapshot.forEach((docSnap) => {
-      const data = docSnap.data();
+    // Add to Recent Activity
+    if (actTbody && i < 5) {
+      if (!actTbody.querySelector(`[data-txn="${app.txn}"]`)) {
+        const activityCls =
+          app.status === 'Approved' ? 'green' :
+          app.status === 'Rejected' ? 'red' : 'amber';
 
-      const row = document.createElement("tr");
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-txn', app.txn);
+        tr.innerHTML = `
+          <td>${app.name}</td>
+          <td>New Application</td>
+          <td>${app.course}</td>
+          <td>${app.date}</td>
+          <td><span class="db-pill ${activityCls}">${app.status}</span></td>`;
+        actTbody.appendChild(tr);
+      }
+    }
+  });
 
-      row.innerHTML = `
-        <td>${data.name || "-"}</td>
-        <td>${data.email || "-"}</td>
-        <td>${data.course || "-"}</td>
-        <td>${data.applied || data.date || "-"}</td>
+  // Update admission stats
+  const totalApps = apps.length;
+  const approved  = apps.filter(a => a.status === 'Approved').length;
+  const pending   = apps.filter(a => a.status === 'Pending').length;
+  const rejected  = apps.filter(a => a.status === 'Rejected').length;
 
-        <td>
-          <span class="db-pill ${
-            data.status === "Approved"
-              ? "green"
-              : data.status === "Rejected"
-              ? "red"
-              : "amber"
-          }">
-            ${data.status || "Pending"}
-          </span>
-        </td>
+  const admStats = document.querySelectorAll('#sec-admissions .db-stat-card > div strong');
+  if (admStats[0]) admStats[0].textContent = totalApps;
+  if (admStats[1]) admStats[1].textContent = approved;
+  if (admStats[2]) admStats[2].textContent = pending;
+  if (admStats[3]) admStats[3].textContent = rejected;
 
-        <td>
-          <button
-            class="db-btn-sm"
-            onclick="approveApplication('${docSnap.id}')">
-            Approve
-          </button>
+  // Update overview admissions card
+  const ovStats = document.querySelectorAll('#sec-overview .db-stats-grid .db-stat-card > div strong');
+  if (ovStats[1]) ovStats[1].textContent = totalApps;
 
-          <button
-            class="db-btn-sm"
-            onclick="rejectApplication('${docSnap.id}')">
-            Reject
-          </button>
-        </td>
-      `;
+  // Update quick stats pending
+  const ql = document.querySelectorAll('.db-quick-list li');
+  ql.forEach(li => {
+    if (li.querySelector('span')?.textContent === 'Pending Apps') {
+      li.querySelector('strong').textContent = pending;
+    }
+  });
 
-      tbody.appendChild(row);
-    });
-
-  } catch (error) {
-    console.error("Admissions error:", error);
-
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="6" style="text-align:center;color:red;">
-          Failed to load applications
-        </td>
-      </tr>
-    `;
-  }
+  refreshStudentCount();
 }
 
-// =====================================
-// APPROVE / REJECT APPLICATIONS
-// =====================================
-
-window.approveApplication = async function(id) {
-  try {
-    await updateDoc(doc(db, "applications", id), {
-      status: "Approved"
-    });
-
-    alert("Application approved!");
-    loadAdmissions();
-
-  } catch (error) {
-    console.error(error);
-    alert("Could not approve application.");
-  }
-};
-
-window.rejectApplication = async function(id) {
-  try {
-    await updateDoc(doc(db, "applications", id), {
-      status: "Rejected"
-    });
-
-    alert("Application rejected!");
-    loadAdmissions();
-
-  } catch (error) {
-    console.error(error);
-    alert("Could not reject application.");
-  }
-};
-
-// =====================================
-// START
-// =====================================
-
-document.addEventListener("DOMContentLoaded", () => {
-  loadAdmissions();
-});
+// Run on page load
+document.addEventListener('DOMContentLoaded', loadWebsiteApplications);
 
 // Also update when status changes (after approve/reject)
 const _origUpdateAdmStatus = window.updateAdmStatus;
@@ -1030,17 +967,11 @@ document.addEventListener('DOMContentLoaded', function() {
 // ========================
 // STUDENT REVIEWS
 // ========================
-window.switchReviewTab = function(btn, status) {
-  document.querySelectorAll('.db-rtab').forEach(function(tab) {
-    tab.classList.remove('active');
-  });
-
-  if (btn) {
-    btn.classList.add('active');
-  }
-
+function switchReviewTab(btn, status) {
+  document.querySelectorAll('.db-rtab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
   renderReviews(status);
-};
+}
 
 function getReviews() {
   return JSON.parse(localStorage.getItem('allReviews') || '[]');

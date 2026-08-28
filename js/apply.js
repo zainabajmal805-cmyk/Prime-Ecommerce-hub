@@ -2,6 +2,22 @@
 // APPLY.JS — Professional Admission & Payment Flow
 // ============================================
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAiqN9v4p7MoS7vbH3vFXBwQd3MLcLeXfo",
+  authDomain: "primeecommercehub.firebaseapp.com",
+  projectId: "primeecommercehub",
+  storageBucket: "primeecommercehub.firebasestorage.app",
+  messagingSenderId: "658801275706",
+  appId: "1:658801275706:web:451eea614f832ffe881603",
+  measurementId: "G-Q6JG26T3LC"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const COURSES_DATA = {
   "Shopify Mastery": {
     name: "Shopify Mastery",
@@ -170,11 +186,11 @@ const COURSES_DATA = {
 // ========================
 // DOM INITIALIZATION
 // ========================
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   initCourseFromURL();
   // Listen to course radio changes
   document.querySelectorAll('input[name="ap-course"]').forEach(radio => {
-    radio.addEventListener('change', function() {
+    radio.addEventListener('change', function () {
       renderCourseBanner(this.value);
       updateSidebarPreview(this.value, this.dataset.fee, this.dataset.dur);
     });
@@ -182,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initCourseFromURL() {
-  const urlParams   = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(window.location.search);
   const courseParam = urlParams.get('course');
   if (courseParam) {
     const key = Object.keys(COURSES_DATA).find(k =>
@@ -191,7 +207,7 @@ function initCourseFromURL() {
     );
     if (key) {
       const radio = Array.from(document.querySelectorAll('input[name="ap-course"]'))
-                         .find(r => r.value.toLowerCase() === key.toLowerCase());
+        .find(r => r.value.toLowerCase() === key.toLowerCase());
       if (radio) {
         radio.checked = true;
         renderCourseBanner(key);
@@ -202,7 +218,7 @@ function initCourseFromURL() {
 }
 
 function renderCourseBanner(courseName) {
-  const data      = COURSES_DATA[courseName];
+  const data = COURSES_DATA[courseName];
   const container = document.getElementById('ap-course-banner-wrap');
   if (!container) return;
 
@@ -262,7 +278,7 @@ function copyText(text, btn) {
     setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.style.color = ''; }, 2000);
   });
 }
-function copyAccountText(text, btn) { copyText(text, btn); }
+
 
 // ========================
 // STEP NAVIGATION
@@ -325,17 +341,17 @@ function getCurrentStep() {
 // ========================
 function validateStep(step) {
   if (step === 1) {
-    const name  = document.getElementById('ap-fullname')?.value.trim();
+    const name = document.getElementById('ap-fullname')?.value.trim();
     const phone = document.getElementById('ap-phone')?.value.trim();
     const email = document.getElementById('ap-email')?.value.trim();
-    const cnic  = document.getElementById('ap-cnic')?.value.trim();
-    const city  = document.getElementById('ap-city')?.value.trim();
+    const cnic = document.getElementById('ap-cnic')?.value.trim();
+    const city = document.getElementById('ap-city')?.value.trim();
 
-    if (!name)  { highlight('ap-fullname', 'Full name is required'); return false; }
-    if (!phone) { highlight('ap-phone',    'Phone number is required'); return false; }
+    if (!name) { highlight('ap-fullname', 'Full name is required'); return false; }
+    if (!phone) { highlight('ap-phone', 'Phone number is required'); return false; }
     if (!email || !email.includes('@')) { highlight('ap-email', 'Valid email is required'); return false; }
-    if (!cnic)  { highlight('ap-cnic', 'CNIC is required for certificate registration'); return false; }
-    if (!city)  { highlight('ap-city', 'City is required'); return false; }
+    if (!cnic) { highlight('ap-cnic', 'CNIC is required for certificate registration'); return false; }
+    if (!city) { highlight('ap-city', 'City is required'); return false; }
     return true;
   }
   if (step === 2) {
@@ -357,12 +373,12 @@ function highlight(id, msg) {
   const el = document.getElementById(id);
   if (!el) return;
   el.style.borderColor = '#ef4444';
-  el.style.boxShadow   = '0 0 0 3px rgba(239,68,68,.15)';
+  el.style.boxShadow = '0 0 0 3px rgba(239,68,68,.15)';
   el.focus();
   showApAlert(msg);
   el.addEventListener('input', () => {
     el.style.borderColor = '';
-    el.style.boxShadow   = '';
+    el.style.boxShadow = '';
   }, { once: true });
 }
 
@@ -380,15 +396,7 @@ function showApAlert(msg) {
   al._t = setTimeout(() => { al.style.opacity = '0'; }, 2800);
 }
 
-function updateOrderSummary() {
-  const sel = document.querySelector('input[name="ap-course"]:checked');
-  if (!sel) return;
 
-  const data = COURSES_DATA[sel.value] || { title: sel.value, dur: sel.dataset.dur, fee: sel.dataset.fee };
-  document.getElementById('pay-course-name').textContent = data.title || sel.value;
-  document.getElementById('pay-course-dur').textContent  = data.dur || sel.dataset.dur;
-  document.getElementById('pay-course-fee').textContent  = 'PKR ' + parseInt(data.fee || sel.dataset.fee).toLocaleString('en-PK');
-}
 
 function copyAccountText(text, btnEl) {
   navigator.clipboard.writeText(text).then(() => {
@@ -407,36 +415,42 @@ function copyAccountText(text, btnEl) {
 // ========================
 // SUBMIT APPLICATION
 // ========================
-function submitApplication() {
+async function submitApplication() {
   if (!validateStep(3)) return;
 
-  const name     = document.getElementById('ap-fullname').value.trim();
-  const phone    = document.getElementById('ap-phone').value.trim();
-  const email    = document.getElementById('ap-email').value.trim();
-  const cnic     = document.getElementById('ap-cnic').value.trim();
-  const city     = document.getElementById('ap-city')?.value.trim() || '';
-  const about    = document.getElementById('ap-about')?.value.trim() || '';
-  const course   = document.querySelector('input[name="ap-course"]:checked');
-  const payment  = document.querySelector('input[name="ap-payment"]:checked');
-  const txn      = document.getElementById('ap-txn').value.trim();
-  const today    = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+  const name = document.getElementById('ap-fullname').value.trim();
+  const phone = document.getElementById('ap-phone').value.trim();
+  const email = document.getElementById('ap-email').value.trim();
+  const cnic = document.getElementById('ap-cnic').value.trim();
+  const city = document.getElementById('ap-city')?.value.trim() || '';
+  const about = document.getElementById('ap-about')?.value.trim() || '';
+  const course = document.querySelector('input[name="ap-course"]:checked');
+  const payment = document.querySelector('input[name="ap-payment"]:checked');
+  const txn = document.getElementById('ap-txn').value.trim();
+  const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   const enrollID = 'PH-2026-' + Math.floor(1000 + Math.random() * 9000);
 
   const application = {
     enrollID, name, phone, email, cnic, city, about,
-    course:  course.value,
-    fee:     course.dataset.fee,
+    course: course.value,
+    fee: course.dataset.fee,
     payment: payment.value,
     txn, date: today,
     status: 'Pending'
   };
 
-  const existing = JSON.parse(localStorage.getItem('ph_applications') || '[]');
-  existing.push(application);
-  localStorage.setItem('ph_applications', JSON.stringify(existing));
+  try {
+    await addDoc(collection(db, "applications"), application);
 
-  showConfirmation(application);
-  goStep(4);
+    console.log("Application saved to Firebase!");
+
+    showConfirmation(application);
+    goStep(4);
+
+  } catch (error) {
+    console.error("Firebase Error:", error);
+    alert("Application submit nahi hui. Please try again.");
+  }
 }
 
 function showConfirmation(app) {
@@ -461,37 +475,43 @@ function showConfirmation(app) {
 // ========================
 // SUBMIT WITHOUT PAYMENT
 // ========================
-function submitWithoutPayment() {
+async function submitWithoutPayment() {
   // Only validate steps 1 and 2 — no payment required
   if (!validateStep(1)) { goStepDirect(1); return; }
   if (!validateStep(2)) { goStepDirect(2); return; }
 
-  const name   = document.getElementById('ap-fullname').value.trim();
-  const phone  = document.getElementById('ap-phone').value.trim();
-  const email  = document.getElementById('ap-email').value.trim();
-  const cnic   = document.getElementById('ap-cnic').value.trim();
-  const city   = document.getElementById('ap-city')?.value.trim() || '';
-  const about  = document.getElementById('ap-about')?.value.trim() || '';
+  const name = document.getElementById('ap-fullname').value.trim();
+  const phone = document.getElementById('ap-phone').value.trim();
+  const email = document.getElementById('ap-email').value.trim();
+  const cnic = document.getElementById('ap-cnic').value.trim();
+  const city = document.getElementById('ap-city')?.value.trim() || '';
+  const about = document.getElementById('ap-about')?.value.trim() || '';
   const course = document.querySelector('input[name="ap-course"]:checked');
-  const today  = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+  const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   const enrollID = 'PH-2026-' + Math.floor(1000 + Math.random() * 9000);
 
   const application = {
     enrollID, name, phone, email, cnic, city, about,
-    course:  course.value,
-    fee:     course.dataset.fee,
+    course: course.value,
+    fee: course.dataset.fee,
     payment: 'Pay Later (Pending)',
-    txn:     'N/A',
-    date:    today,
-    status:  'Pending'
+    txn: 'N/A',
+    date: today,
+    status: 'Pending'
   };
 
-  const existing = JSON.parse(localStorage.getItem('ph_applications') || '[]');
-  existing.push(application);
-  localStorage.setItem('ph_applications', JSON.stringify(existing));
+  try {
+    await addDoc(collection(db, "applications"), application);
 
-  showConfirmation(application);
-  goStepDirect(4);
+    console.log("Application saved to Firebase!");
+
+    showConfirmation(application);
+    goStepDirect(4);
+
+  } catch (error) {
+    console.error("Firebase Error:", error);
+    alert("Application submit nahi hui. Please try again.");
+  }
 }
 
 function applyAnother() {
@@ -502,3 +522,11 @@ function applyAnother() {
   document.getElementById('ap-course-banner-wrap').style.display = 'none';
   goStep(1);
 }
+
+// Expose functions to window so they can be called from inline event handlers
+window.tryGoStep = tryGoStep;
+window.goStep = goStep;
+window.copyText = copyText;
+window.submitApplication = submitApplication;
+window.submitWithoutPayment = submitWithoutPayment;
+window.applyAnother = applyAnother;

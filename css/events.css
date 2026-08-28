@@ -11,6 +11,10 @@
   align-items: flex-end;
 }
 
+@media (max-width: 1024px) { .ev-hero { height: 420px; } }
+@media (max-width: 768px)  { .ev-hero { height: 300px; } }
+@media (max-width: 480px)  { .ev-hero { height: 240px; } }
+
 /* Static image fallback */
 .ev-hero-img {
   position: absolute;
