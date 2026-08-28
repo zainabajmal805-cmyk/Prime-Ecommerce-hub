@@ -369,6 +369,7 @@
     // Upload to Firebase if available
     if (window._firebaseDb && window._firebaseAddDoc) {
       try {
+        /*
         if (photoFile && window._firebaseStorage) {
           const photoRef = window._firebaseRef(
             window._firebaseStorage,
@@ -377,6 +378,7 @@
           await window._firebaseUploadBytes(photoRef, photoFile);
           photoURL = await window._firebaseGetDownloadURL(photoRef);
         }
+        */
 
         await window._firebaseAddDoc(
           window._firebaseCollection(window._firebaseDb, 'reviews'),

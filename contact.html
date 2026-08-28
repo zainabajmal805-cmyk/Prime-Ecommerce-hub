@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -78,7 +78,7 @@
                     <div class="contact-points">
                         <div>
                             <strong>Email</strong>
-                            <span>hello@ecommercehub.com</span>
+                            <span>asifghafoor810@gmail.com</span>
                         </div>
                         <div>
                             <strong>Phone</strong>
@@ -95,7 +95,7 @@
                     </div>
                 </div>
 
-                <form class="contact-form contact-form--full">
+                <form class="contact-form contact-form--full" id="contactForm">
                     <div class="input-row">
                         <input type="text" placeholder="Full Name" aria-label="Full Name" />
                         <input type="email" placeholder="Email" aria-label="Email" />
@@ -165,7 +165,7 @@
           <h4>Contact</h4>
           <a href="tel:+923126772989">+92-312-6772989</a>
           <a href="https://wa.me/923126772989">WhatsApp</a>
-          <a href="mailto:info@primeecommercehub.com">Email Us</a>
+          <a href="mailto:asifghafoor810@gmail.com">Email Us</a>
           <span>Mujahid colony, St 1 Kacha Shahi Rd, Sadiqabad</span>
         </div>
       </div>
@@ -217,8 +217,79 @@
       });
     });
   })();</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAiqN9v4p7MoS7vbH3vFXBwQd3MLcLeXfo",
+    authDomain: "primeecommercehub.firebaseapp.com",
+    projectId: "primeecommercehub",
+    storageBucket: "primeecommercehub.firebasestorage.app",
+    messagingSenderId: "658801275706",
+    appId: "1:658801275706:web:451eea614f832ffe881603"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  document.getElementById("contactForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const inputs = this.querySelectorAll("input");
+    const select = this.querySelector("select");
+    const textarea = this.querySelector("textarea");
+    const button = this.querySelector("button");
+
+    const name = inputs[0].value.trim();
+    const email = inputs[1].value.trim();
+    const phone = inputs[2].value.trim();
+    const business = inputs[3].value.trim();
+    const interest = select.value;
+    const message = textarea.value.trim();
+
+    if (!name || !email || !message) {
+      alert("Please fill in your Name, Email and Message.");
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Sending...";
+
+    try {
+      await addDoc(collection(db, "messages"), {
+        name: name,
+        email: email,
+        phone: phone,
+        business: business,
+        interest: interest,
+        message: message,
+        status: "unread",
+        createdAt: serverTimestamp()
+      });
+
+      alert("Thank you! Your message has been sent successfully.");
+
+      this.reset();
+
+    } catch (error) {
+      console.error("Message error:", error);
+      alert("Message send nahi hua. Please try again.");
+    }
+
+    button.disabled = false;
+    button.textContent = "Send Message";
+  });
+</script>
 </body>
 </html>
+
 
 
 
