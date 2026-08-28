@@ -1,4 +1,4 @@
-﻿/* =====================================================
+/* =====================================================
    RESPONSIVE.CSS — Prime Ecommerce Hub
    Full Site Responsive — All Pages
    Breakpoints: 1200px | 1024px | 768px | 560px | 400px
@@ -123,7 +123,11 @@
 
   /* NAVBAR */
   .nav-hamburger { display: flex; }
-  .nav-enroll-btn { display: none; }
+  .nav-enroll-btn, .cd-enroll-btn {
+    display: inline-flex;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
   .nav-links {
     display: none;
     flex-direction: column;

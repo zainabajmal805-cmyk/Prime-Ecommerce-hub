@@ -579,9 +579,17 @@ function init() {
     const el = document.getElementById(id);
     if (el) {
       el.href = enrollUrl;
-      if (id === 'navEnrollBtn') el.textContent = 'Enroll in ' + courseName;
     }
   });
+
+  const navEnroll = document.getElementById('navEnrollBtn');
+  if (navEnroll) {
+    const updateNavBtnText = () => {
+      navEnroll.textContent = window.innerWidth > 1150 ? 'Enroll in ' + courseName : 'Enroll Now';
+    };
+    updateNavBtnText();
+    window.addEventListener('resize', updateNavBtnText);
+  }
 
   // Overview cards
   const ogEl = document.getElementById('cdOverviewGrid');

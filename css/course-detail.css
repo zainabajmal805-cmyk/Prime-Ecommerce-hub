@@ -37,8 +37,86 @@ img   { max-width: 100%; display: block; }
   color: #fff; font-size: 0.86rem; font-weight: 700;
   box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
   transition: opacity 0.15s, transform 0.15s; flex-shrink: 0;
+  white-space: nowrap;
 }
 .cd-enroll-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* Dropdown */
+.nav-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav-dropdown-trigger {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.87rem;
+  font-weight: 500;
+  padding: 7px 13px;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-dropdown-trigger:hover,
+.nav-dropdown-trigger.active {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  min-width: 150px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  padding: 6px;
+  z-index: 99999;
+  flex-direction: column;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu {
+  display: flex;
+}
+
+.nav-dropdown-menu a {
+  display: block;
+  padding: 9px 14px;
+  border-radius: 8px;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.86rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-dropdown-menu a:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+/* Mobile dropdown */
+@media (max-width: 768px) {
+  .nav-dropdown { flex-direction: column; align-items: flex-start; width: 100%; }
+  .nav-dropdown-menu {
+    display: flex !important;
+    position: static;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    padding: 2px 0 4px 16px;
+  }
+  .nav-dropdown-menu a { color: rgba(255,255,255,0.55); font-size: 0.83rem; padding: 5px 0; }
+}
 
 /* ---- HERO ---- */
 .cd-hero {
@@ -244,9 +322,20 @@ img   { max-width: 100%; display: block; }
 .cd-footer-links a:hover { color: #fff; }
 
 /* ---- RESPONSIVE ---- */
-@media (max-width: 1024px) {
+@media (max-width: 1150px) {
   .cd-main-layout { grid-template-columns: 1fr; }
   .cd-sticky-card { position: static; }
+  .cd-nav-inner {
+    padding: 0 16px;
+    gap: 12px;
+  }
+  .cd-nav-links {
+    gap: 2px;
+  }
+  .cd-nav-links a {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
 }
 @media (max-width: 768px) {
   .cd-nav-links { display: none; }
