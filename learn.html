@@ -332,72 +332,27 @@
 --------------------------------------- -->
 <section class="ln-section ln-section--pink">
   <div class="ln-container">
+
     <div class="ln-section-head">
       <span class="ln-label">Student Reviews</span>
       <h2>What Our Students Say</h2>
       <p>Real experiences from students at Prime Ecommerce Hub.</p>
     </div>
 
-    <div class="ln-testi-grid">
-
-      <div class="ln-testi-card">
-        <div class="ln-testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p>"Prime Ecommerce Hub ne mujhe Amazon FBA ka practical knowledge diya. Ab main apna store run kar raha hun aur results aa rahe hain."</p>
-        <div class="ln-testi-author">
-          <div class="ln-testi-avatar">AK</div>
-          <div>
-            <strong>Ali Karim</strong>
-            <span>Amazon FBA &middot; Lahore</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ln-testi-card">
-        <div class="ln-testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p>"Shopify course bohat informative tha. Instructor ne har cheez step by step samjhaya. Highly recommend karta hun."</p>
-        <div class="ln-testi-author">
-          <div class="ln-testi-avatar">SR</div>
-          <div>
-            <strong>Sana Rehman</strong>
-            <span>Shopify &middot; Karachi</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ln-testi-card">
-        <div class="ln-testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p>"Digital Marketing course ne meri freelancing journey start karwai. Sir Asif ka teaching style bohot clear aur practical hai."</p>
-        <div class="ln-testi-author">
-          <div class="ln-testi-avatar">UQ</div>
-          <div>
-            <strong>Usman Qadir</strong>
-            <span>Digital Marketing &middot; Sadiqabad</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ln-testi-card">
-        <div class="ln-testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p>"Prime Ecommerce Hub ne mujhe e-commerce ka kaam samajhne mein bohat help ki. Sir Asif ka teaching style practical, simple aur clear hai. Overall, mera experience bohat acha raha. &#128522;"</p>
-        <div class="ln-testi-author">
-          <div class="ln-testi-avatar ln-testi-avatar--img">
-            <img src="images/khadija.jpeg" alt="Khadija" />
-          </div>
-          <div>
-            <strong>Khadija</strong>
-            <span>E-Commerce &middot; Sadiqabad</span>
-          </div>
-        </div>
-      </div>
-
+    <div class="ln-testi-grid" id="studentReviews">
+      <!-- Real reviews will appear here -->
     </div>
 
-    <!-- Share Your Experience CTA -->
     <div class="ln-review-cta">
       <p>Did you study at Prime Ecommerce Hub?</p>
+
       <a href="review-form.html" class="ln-review-btn">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        Share Your Experience &#8594;
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+             stroke="currentColor" stroke-width="2">
+          <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+        Share Your Experience &rarr;
       </a>
     </div>
 
@@ -644,6 +599,72 @@
     document.querySelectorAll('.ln-faq-item.open').forEach(el => el.classList.remove('open'));
     if (!isOpen) item.classList.add('open');
   }
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAiqN9v4p7MoS7vbH3vFXBwQd3MLcLeXfo",
+    authDomain: "primeecommercehub.firebaseapp.com",
+    projectId: "primeecommercehub",
+    storageBucket: "primeecommercehub.firebasestorage.app",
+    messagingSenderId: "658801275706",
+    appId: "1:658801275706:web:451eea614f832ffe881603"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function loadApprovedReviews() {
+    const container = document.getElementById("studentReviews");
+    if (!container) return;
+
+    try {
+      const q = query(collection(db, "reviews"), where("status", "==", "approved"));
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        container.innerHTML = "<p style='text-align:center; color:#64748b; font-size:0.9rem; grid-column:1/-1;'>Be the first to share your experience!</p>";
+        return;
+      }
+
+      let html = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const nameParts = (data.name || "Student").split(" ");
+        const initials = nameParts.length > 1 
+          ? nameParts[0][0] + nameParts[nameParts.length - 1][0] 
+          : nameParts[0].substring(0, 2);
+          
+        let stars = "";
+        const rating = parseInt(data.rating) || 5;
+        for (let i=0; i<rating; i++) stars += "&#9733;";
+
+        html += `
+          <div class="ln-testi-card">
+            <div class="ln-testi-stars">${stars}</div>
+            <p>"${data.review || ""}"</p>
+            <div class="ln-testi-author">
+              <div class="ln-testi-avatar">${initials.toUpperCase()}</div>
+              <div>
+                <strong>${data.name || "Anonymous"}</strong>
+                <span>${data.course || "Prime Student"}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+
+    } catch (error) {
+      console.error("Error loading reviews:", error);
+      container.innerHTML = "<p style='text-align:center; color:red; grid-column:1/-1;'>Failed to load reviews.</p>";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", loadApprovedReviews);
 </script>
 
 </body>
