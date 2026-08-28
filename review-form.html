@@ -306,6 +306,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAiqN9v4p7MoS7vbH3vFXBwQd3MLcLeXfo",
@@ -318,12 +319,17 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const storage = getStorage(app);
 
   // Expose db to window so submitReview() can use it
   window._firebaseDb = db;
+  window._firebaseStorage = storage;
   window._firebaseAddDoc = addDoc;
   window._firebaseCollection = collection;
   window._firebaseServerTimestamp = serverTimestamp;
+  window._firebaseRef = ref;
+  window._firebaseUploadBytes = uploadBytes;
+  window._firebaseGetDownloadURL = getDownloadURL;
 
   document.getElementById('hamburger').addEventListener('click', function() {
     document.getElementById('navLinks').classList.toggle('open');
@@ -338,48 +344,75 @@
 </script>
 
 <script>
-  function submitReview(event) {
+  async function submitReview(event) {
     event.preventDefault();
 
     const name   = document.getElementById('rf-name')?.value.trim();
     const course = document.getElementById('rf-course')?.value.trim();
     const review = document.getElementById('rf-review')?.value.trim();
     const rating = document.querySelector('input[name="rating"]:checked')?.value || '5';
+    const photoFile = document.getElementById("rf-photo")?.files[0];
 
     if (!name || !course || !review) {
       alert('Please fill all required fields.');
       return false;
     }
 
+    // Change button to show loading
+    const submitBtn = document.querySelector('.rf-submit');
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.textContent = 'Submitting...';
+    submitBtn.disabled = true;
+
+    let photoURL = "";
+
+    // Upload to Firebase if available
+    if (window._firebaseDb && window._firebaseAddDoc) {
+      try {
+        if (photoFile && window._firebaseStorage) {
+          const photoRef = window._firebaseRef(
+            window._firebaseStorage,
+            `reviews/${Date.now()}_${photoFile.name}`
+          );
+          await window._firebaseUploadBytes(photoRef, photoFile);
+          photoURL = await window._firebaseGetDownloadURL(photoRef);
+        }
+
+        await window._firebaseAddDoc(
+          window._firebaseCollection(window._firebaseDb, 'reviews'),
+          {
+            name:      name,
+            course:    course,
+            rating:    Number(rating),
+            review:    review,
+            photoURL:  photoURL,
+            status:    'pending',
+            createdAt: window._firebaseServerTimestamp()
+          }
+        );
+      } catch (err) {
+        console.error('Firebase error:', err);
+        alert("Review submit nahi hui. Please try again.");
+        submitBtn.textContent = originalBtnText;
+        submitBtn.disabled = false;
+        return false;
+      }
+    }
+
+    // Save to localStorage (fallback/local use)
     const newReview = {
       id:     'rv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
       name:   name,
       course: course,
       rating: rating,
       review: review,
+      photoURL: photoURL,
       status: 'pending',
       date:   new Date().toLocaleDateString('en-GB')
     };
-
-    // Save to localStorage
     const reviews = JSON.parse(localStorage.getItem('allReviews') || '[]');
     reviews.push(newReview);
     localStorage.setItem('allReviews', JSON.stringify(reviews));
-
-    // Also save to Firebase if available
-    if (window._firebaseDb && window._firebaseAddDoc) {
-      window._firebaseAddDoc(
-        window._firebaseCollection(window._firebaseDb, 'reviews'),
-        {
-          name:      name,
-          course:    course,
-          rating:    Number(rating),
-          review:    review,
-          status:    'pending',
-          createdAt: window._firebaseServerTimestamp()
-        }
-      ).catch(err => console.error('Firebase error:', err));
-    }
 
     // Show success
     const formSection    = document.getElementById('rf-form-section');

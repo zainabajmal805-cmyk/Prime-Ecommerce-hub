@@ -642,12 +642,16 @@
         const rating = parseInt(data.rating) || 5;
         for (let i=0; i<rating; i++) stars += "&#9733;";
 
+        const avatarHTML = data.photoURL
+          ? `<div class="ln-testi-avatar ln-testi-avatar--img"><img src="${data.photoURL}" alt="${data.name || 'Student'}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" /></div>`
+          : `<div class="ln-testi-avatar">${initials.toUpperCase()}</div>`;
+
         html += `
           <div class="ln-testi-card">
             <div class="ln-testi-stars">${stars}</div>
             <p>"${data.review || ""}"</p>
             <div class="ln-testi-author">
-              <div class="ln-testi-avatar">${initials.toUpperCase()}</div>
+              ${avatarHTML}
               <div>
                 <strong>${data.name || "Anonymous"}</strong>
                 <span>${data.course || "Prime Student"}</span>
