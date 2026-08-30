@@ -69,8 +69,8 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 177.78vh;  /* 16:9 ratio */
-  height: 56.25vw; /* 16:9 ratio */
+  width: 177.78vh;
+  height: 56.25vw;
   min-width: 100%;
   min-height: 100%;
   transform: translate(-50%, -50%);
@@ -108,15 +108,6 @@
   font-family: monospace;
   color: #fda4af;
   font-style: normal;
-}
-
-.ev-hero-content {
-  position: relative;
-  z-index: 2;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 32px 52px;
-  width: 100%;
 }
 
 .ev-eyebrow {
@@ -360,44 +351,11 @@
   .ev-highlights-grid { grid-template-columns: 1fr 1fr; }
 }
 
-
 /* ── VIDEO SECTION ── */
 .ev-video-section { background: #0f172a; }
 .ev-video-section .ev-section-head h2 { color: #fff; }
 .ev-video-section .ev-section-head p  { color: rgba(255,255,255,0.55); }
 .ev-video-section .ev-label           { color: #fda4af; }
-
-.ev-video-wrap {
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-.ev-video-wrap iframe {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 16px;
-  display: block;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  border: 2px solid rgba(255,255,255,0.08);
-}
-
-.ev-video-note {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 14px;
-  color: rgba(255,255,255,0.4);
-  font-size: 0.78rem;
-  justify-content: center;
-}
-
-.ev-video-note code {
-  background: rgba(255,255,255,0.1);
-  padding: 1px 6px;
-  border-radius: 4px;
-  font-family: monospace;
-  color: #fda4af;
-}
 
 /* ── ROW LABELS ── */
 .ev-row-label {
@@ -408,4 +366,64 @@
   text-transform: uppercase;
   margin-bottom: 12px;
   padding-left: 4px;
+}
+
+/* ── EVENT VIDEOS ── */
+.event-videos {
+    width: 100%;
+    max-width: 1150px;
+    margin: 30px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.event-video {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #000;
+}
+
+.event-video iframe {
+    display: block;
+    width: 100%;
+    height: 650px;
+    border: 0;
+}
+
+/* TABLET */
+@media (max-width: 900px) {
+    .event-videos {
+        gap: 18px;
+        padding: 0 16px;
+    }
+    .event-video iframe {
+        height: 560px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    .event-videos {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 12px;
+    }
+    .event-video iframe {
+        height: 600px;
+    }
+}
+
+/* SMALL MOBILE */
+@media (max-width: 400px) {
+    .event-videos {
+        padding: 0 10px;
+    }
+    .event-video iframe {
+        height: 560px;
+    }
 }
