@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAiqN9v4p7MoS7vbH3vFXBwQd3MLcLeXfo",
@@ -279,81 +279,24 @@ function updateAdmStatus(name, status, cls, btn) {
 
     // If Approved → add to Students table automatically
     if (status === 'Approved') {
-      const app = JSON.parse(localStorage.getItem('ph_applications') || '[]')
-                    .find(a => a.txn === txn);
-      if (app) addApprovedToStudents(app);
+      // Handled by Firebase approveApplication now
+      if (typeof loadStudentsFromFirebase === 'function') {
+        loadStudentsFromFirebase();
+      }
     }
   }
   closeModal('admDetailModal');
   showToast(`${name} has been ${status.toLowerCase()}`);
 }
 
-// Add approved student to Students section
-function addApprovedToStudents(app, updateCount = true) {
-  const tbody = document.querySelector('#std-table tbody');
-  if (!tbody) return;
-
-  // Already added?
-  if (tbody.querySelector(`[data-txn="${app.txn}"]`)) return;
-
-  // Remove empty-state rows
-  tbody.querySelectorAll('tr').forEach(r => {
-    if (!r.querySelector('td') || r.textContent.includes('No students')) {
-      r.remove();
-    }
-  });
-
-  const existingRows = tbody.querySelectorAll('tr').length;
-  const sid = '#S' + String(existingRows + 1).padStart(3, '0');
-
-  const tr = document.createElement('tr');
-
-  tr.setAttribute('data-txn', app.txn || '');
-
-  tr.innerHTML = `
-    <td>${escapeHTML(sid)}</td>
-    <td>${escapeHTML(app.name || '')}</td>
-    <td>${escapeHTML(app.course || '')}</td>
-    <td>${escapeHTML(app.phone || '')}</td>
-    <td>${escapeHTML(app.date || '')}</td>
-    <td><span class="db-pill green">Active</span></td>
-    <td>
-      <button class="db-btn-sm student-profile-btn">
-        Profile
-      </button>
-    </td>
-  `;
-
-  const profileBtn = tr.querySelector('.student-profile-btn');
-
-  if (profileBtn) {
-    profileBtn.addEventListener('click', () => {
-      openStudentProfile(
-        profileBtn,
-        app.name || '',
-        sid,
-        app.course || '',
-        app.phone || '',
-        app.email || '',
-        app.date || ''
-      );
-    });
-  }
-
-  tbody.appendChild(tr);
-
-  // Only update count when a NEW student is actually added
-  if (updateCount) {
-    refreshStudentCount();
-  }
-}
+// addApprovedToStudents removed as students are now loaded from Firebase
 
 // ========================
 // ADD COURSE FORM
 // ========================
 const addCourseForm = document.querySelector('#addCourseModal form');
 if (addCourseForm) {
-  addCourseForm.addEventListener('submit', function(e) {
+  addCourseForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     const inputs = this.querySelectorAll('input');
     const name   = inputs[0]?.value.trim();
@@ -361,20 +304,84 @@ if (addCourseForm) {
     const fee    = inputs[2]?.value.trim();
     const status = this.querySelector('select')?.value || 'Active';
     if (!name || !dur || !fee) { showToast('Fill all required fields', 'error'); return; }
-    const tbody = document.querySelector('#sec-courses .db-table tbody');
-    if (tbody) {
-      const cls = status === 'Active' ? 'green' : 'amber';
-      const tr  = document.createElement('tr');
-      tr.innerHTML = `<td>${name}</td><td>${dur}</td><td>${Number(fee).toLocaleString()}</td><td>0</td>
-        <td><span class="db-pill ${cls}">${status}</span></td>
-        <td><button class="db-btn-sm" onclick="showModal('courseStudentsModal')">Students</button></td>`;
-      tbody.appendChild(tr);
+    
+    try {
+      const docRef = await addDoc(collection(db, "courses"), {
+        name,
+        duration: dur,
+        fee: Number(fee),
+        status,
+        createdAt: serverTimestamp()
+      });
+      
+      console.log("COURSE SAVED TO FIREBASE:", docRef.id);
+      
+      showToast(`Course "${name}" added`);
+      closeModal('addCourseModal');
+      this.reset();
+      
+      if (typeof loadCoursesFromFirebase === 'function') {
+        loadCoursesFromFirebase();
+      }
+    } catch (err) {
+      console.error("COURSE FIREBASE WRITE ERROR:", err);
+      showToast('Error adding course', 'error');
     }
-    updateStatCount('courses', +1);
-    showToast(`Course "${name}" added`);
-    closeModal('addCourseModal');
-    this.reset();
   });
+}
+
+// =====================================
+// LOAD COURSES FROM FIREBASE
+// =====================================
+async function loadCoursesFromFirebase() {
+  const tbody = document.querySelector('#sec-courses .db-table tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Loading courses...</td></tr>`;
+
+  try {
+    const appsSnapshot = await getDocs(collection(db, "applications"));
+    let courseStudentsCount = {};
+    appsSnapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      if ((data.status || "Pending") === "Approved" && data.course) {
+        courseStudentsCount[data.course] = (courseStudentsCount[data.course] || 0) + 1;
+      }
+    });
+
+    const coursesSnapshot = await getDocs(collection(db, "courses"));
+    tbody.innerHTML = "";
+
+    let courseCount = 0;
+    if (coursesSnapshot.empty) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:30px;">No courses found</td></tr>`;
+    } else {
+      coursesSnapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        courseCount++;
+        const name = data.name || "-";
+        const dur = data.duration || "-";
+        const fee = data.fee || 0;
+        const status = data.status || "Active";
+        const studentsCount = courseStudentsCount[name] || 0;
+        
+        const cls = status === 'Active' ? 'green' : 'amber';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${escapeHTML(name)}</td><td>${escapeHTML(dur)}</td><td>${Number(fee).toLocaleString()}</td><td>${studentsCount}</td>
+          <td><span class="db-pill ${cls}">${escapeHTML(status)}</span></td>
+          <td><button class="db-btn-sm" onclick="showModal('courseStudentsModal')">Students</button></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    const card = document.querySelector('.db-stat-clickable[data-goto="courses"] strong');
+    if (card) {
+      card.textContent = courseCount;
+    }
+  } catch (error) {
+    console.error("Courses Firebase Error:", error);
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#dc2626;padding:30px;">Failed to load courses</td></tr>`;
+  }
 }
 
 // ========================
@@ -382,28 +389,102 @@ if (addCourseForm) {
 // ========================
 const issueCertForm = document.querySelector('#issueCertModal form');
 if (issueCertForm) {
-  issueCertForm.addEventListener('submit', function(e) {
+  issueCertForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     const sels    = this.querySelectorAll('select');
     const student = sels[0]?.value;
     const course  = sels[1]?.value;
     const dateVal = this.querySelector('input[type="date"]')?.value;
     if (!dateVal) { showToast('Select issue date', 'error'); return; }
+    
     const tbody = document.querySelector('#sec-certificates .db-table tbody');
+    let cnt = 1;
     if (tbody) {
-      const cnt   = tbody.querySelectorAll('tr').length + 1;
-      const cid   = '#C' + String(cnt).padStart(3,'0');
-      const ds    = new Date(dateVal).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
-      const tr    = document.createElement('tr');
+      cnt = tbody.querySelectorAll('tr').length + 1;
+    }
+    const cid = '#C' + String(cnt).padStart(3,'0');
+    const ds  = new Date(dateVal).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+
+    const certificateData = {
+      student,
+      course,
+      issueDate: dateVal,
+      formattedDate: ds,
+      certificateId: cid,
+      createdAt: serverTimestamp()
+    };
+    
+    console.log("CERTIFICATE WRITE START", certificateData);
+    
+    try {
+      const snap = await getDocs(collection(db, "certificates"));
+      let isDuplicate = false;
+      snap.forEach(docSnap => {
+        const data = docSnap.data();
+        if (data.student === student && data.course === course) {
+          isDuplicate = true;
+        }
+      });
+      
+      if (isDuplicate) {
+        showToast('Certificate already issued for this student and course', 'error');
+        return;
+      }
+      
+      const docRef = await addDoc(collection(db, "certificates"), certificateData);
+      console.log("CERTIFICATE SAVED TO FIREBASE", docRef.id);
+      
+      showToast(`Certificate issued to ${student}`);
+      closeModal('issueCertModal');
+      this.reset();
+      
+      if (typeof loadCertificatesFromFirebase === 'function') {
+        loadCertificatesFromFirebase();
+      }
+    } catch (error) {
+      console.error("CERTIFICATE FIREBASE ERROR", error);
+      showToast('Error issuing certificate', 'error');
+    }
+  });
+}
+
+// =====================================
+// LOAD CERTIFICATES FROM FIREBASE
+// =====================================
+async function loadCertificatesFromFirebase() {
+  const tbody = document.querySelector('#sec-certificates .db-table tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Loading certificates...</td></tr>`;
+
+  try {
+    const snapshot = await getDocs(collection(db, "certificates"));
+    tbody.innerHTML = "";
+    
+    let cnt = 1;
+    
+    if (snapshot.empty) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:30px;">No certificates found</td></tr>`;
+      return;
+    }
+    
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      const cid = data.certificateId || '#C' + String(cnt++).padStart(3,'0');
+      const student = escapeHTML(data.student || '-');
+      const course = escapeHTML(data.course || '-');
+      const ds = escapeHTML(data.formattedDate || data.issueDate || '-');
+      
+      const tr = document.createElement('tr');
       tr.innerHTML = `<td>${cid}</td><td>${student}</td><td>${course}</td><td>${ds}</td>
         <td><span class="db-pill blue">Issued</span></td>
         <td><button class="db-btn-sm">Download</button></td>`;
       tbody.appendChild(tr);
-    }
-    showToast(`Certificate issued to ${student}`);
-    closeModal('issueCertModal');
-    this.reset();
-  });
+    });
+  } catch (error) {
+    console.error("Firebase Certificates Error:", error);
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#dc2626;padding:30px;">Failed to load certificates</td></tr>`;
+  }
 }
 
 // ========================
@@ -411,12 +492,64 @@ if (issueCertForm) {
 // ========================
 const saveAttBtn = document.querySelector('#sec-attendance .db-btn-primary');
 if (saveAttBtn) {
-  saveAttBtn.addEventListener('click', () => {
-    const rows    = document.querySelectorAll('#sec-attendance .db-table tbody tr');
-    let present   = 0;
-    rows.forEach(r => { if (r.querySelector('input[type="checkbox"]:checked')) present++; });
-    if (!rows.length) { showToast('No students in this course', 'info'); return; }
-    showToast(`Attendance saved — ${present}/${rows.length} present`);
+  saveAttBtn.addEventListener('click', async () => {
+    const selector = document.querySelector('#sec-attendance .db-select');
+    const course = selector ? selector.value : '';
+    const rows = document.querySelectorAll('#sec-attendance .db-table tbody tr[data-student-id]');
+    
+    if (!rows.length) { 
+      showToast('No students in this course', 'info'); 
+      return; 
+    }
+
+    const today = new Date().toLocaleDateString("en-GB");
+    let presentCount = 0;
+    
+    saveAttBtn.disabled = true;
+    saveAttBtn.textContent = 'Saving...';
+
+    try {
+      const promises = [];
+      
+      rows.forEach(r => {
+        const studentId = r.getAttribute('data-student-id');
+        const studentName = r.getAttribute('data-student-name');
+        const attId = r.getAttribute('data-attendance-id');
+        const isPresent = r.querySelector('input[type="checkbox"]').checked;
+        
+        if (isPresent) presentCount++;
+
+        if (attId) {
+          // Update existing
+          promises.push(updateDoc(doc(db, "attendance", attId), { present: isPresent }));
+        } else {
+          // Create new
+          const record = {
+            studentId,
+            studentName,
+            course,
+            date: today,
+            present: isPresent,
+            createdAt: serverTimestamp()
+          };
+          promises.push(addDoc(collection(db, "attendance"), record));
+        }
+      });
+      
+      await Promise.all(promises);
+      
+      showToast(`Attendance saved — ${presentCount}/${rows.length} present`);
+      
+      if (typeof loadAttendanceStudents === 'function') {
+        loadAttendanceStudents();
+      }
+    } catch (error) {
+      console.error("Save attendance error:", error);
+      showToast('Failed to save attendance', 'error');
+    } finally {
+      saveAttBtn.disabled = false;
+      saveAttBtn.textContent = 'Save Attendance';
+    }
   });
 }
 
@@ -714,35 +847,184 @@ async function loadAdmissions() {
 }
 
 // =====================================
+// LOAD STUDENTS FROM FIREBASE
+// =====================================
+
+async function loadStudentsFromFirebase() {
+  const tbody = document.querySelector('#std-table tbody');
+
+  if (!tbody) {
+    console.error('Students table #std-table not found');
+    return;
+  }
+
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="7" style="text-align:center;">
+        Loading students...
+      </td>
+    </tr>
+  `;
+
+  try {
+    const snapshot = await getDocs(collection(db, "applications"));
+
+    tbody.innerHTML = "";
+
+    let studentCount = 0;
+
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+
+      // Only approved applications become students
+      if ((data.status || "Pending") !== "Approved") {
+        return;
+      }
+
+      studentCount++;
+
+      const studentId =
+        data.enrollID ||
+        "#S" + String(studentCount).padStart(3, "0");
+
+      const name   = data.name || "-";
+      const course = data.course || "-";
+      const phone  = data.phone || "-";
+      const email  = data.email || "-";
+      const date   = data.applied || data.date || "-";
+
+      const tr = document.createElement("tr");
+
+      tr.setAttribute("data-txn", docSnap.id);
+      tr.classList.add("student-row");
+
+      tr.innerHTML = `
+        <td>${escapeHTML(studentId)}</td>
+
+        <td>${escapeHTML(name)}</td>
+
+        <td>${escapeHTML(course)}</td>
+
+        <td>${escapeHTML(phone)}</td>
+
+        <td>${escapeHTML(date)}</td>
+
+        <td>
+          <span class="db-pill green">
+            Active
+          </span>
+        </td>
+
+        <td>
+          <button class="db-btn-sm student-profile-btn">
+            Profile
+          </button>
+        </td>
+      `;
+
+      const profileBtn = tr.querySelector(".student-profile-btn");
+
+      profileBtn.addEventListener("click", () => {
+        openStudentProfile(
+          profileBtn,
+          name,
+          studentId,
+          course,
+          phone,
+          email,
+          date
+        );
+      });
+
+      tbody.appendChild(tr);
+    });
+
+    if (studentCount === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align:center;color:#94a3b8;padding:30px;">
+            No approved students yet
+          </td>
+        </tr>
+      `;
+    }
+
+    // Update student stat card
+    const card = document.querySelector(
+      '.db-stat-clickable[data-goto="students"] strong'
+    );
+
+    if (card) {
+      card.textContent = studentCount;
+    }
+
+    console.log("Firebase students loaded:", studentCount);
+
+  } catch (error) {
+
+    console.error("Students Firebase Error:", error);
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align:center;color:#dc2626;padding:30px;">
+          Failed to load students
+        </td>
+      </tr>
+    `;
+  }
+}
+
+// =====================================
 // APPROVE / REJECT APPLICATIONS
 // =====================================
 
 window.approveApplication = async function(id) {
   try {
+
     await updateDoc(doc(db, "applications", id), {
       status: "Approved"
     });
 
     alert("Application approved!");
-    loadAdmissions();
+
+    // Refresh admissions
+    await loadAdmissions();
+
+    // Refresh students
+    await loadStudentsFromFirebase();
+    
+    // Refresh fees
+    if (typeof loadFeeTable === 'function') loadFeeTable();
 
   } catch (error) {
-    console.error(error);
+
+    console.error("Approve application error:", error);
+
     alert("Could not approve application.");
   }
 };
 
 window.rejectApplication = async function(id) {
   try {
+
     await updateDoc(doc(db, "applications", id), {
       status: "Rejected"
     });
 
     alert("Application rejected!");
-    loadAdmissions();
+
+    await loadAdmissions();
+
+    // Refresh students because rejected student
+    // should not appear in Students section
+    await loadStudentsFromFirebase();
+    
+    if (typeof loadFeeTable === 'function') loadFeeTable();
 
   } catch (error) {
-    console.error(error);
+
+    console.error("Reject application error:", error);
+
     alert("Could not reject application.");
   }
 };
@@ -753,6 +1035,8 @@ window.rejectApplication = async function(id) {
 
 document.addEventListener("DOMContentLoaded", () => {
   loadAdmissions();
+  loadStudentsFromFirebase();
+  loadCoursesFromFirebase();
 });
 
 // Also update when status changes (after approve/reject)
@@ -839,13 +1123,15 @@ function saveEditAdmission(txn, form) {
   localStorage.setItem('ph_applications', JSON.stringify(apps));
 
   if (apps[idx].status === 'Approved') {
-    addApprovedToStudents(apps[idx], true);
+    if (typeof loadStudentsFromFirebase === 'function') {
+      loadStudentsFromFirebase();
+    }
   }
 
   // Refresh admissions table
   const admTbody = document.querySelector('#adm-table tbody');
   if (admTbody) admTbody.innerHTML = '';
-  loadWebsiteApplications();
+  // Removed local loadWebsiteApplications(); since we use Firebase
 
   closeModal('editAdmModal');
   showToast('Application updated successfully');
@@ -854,46 +1140,77 @@ function saveEditAdmission(txn, form) {
 // ========================
 // FEE TABLE — AUTO POPULATE
 // ========================
-function loadFeeTable() {
-  const apps   = JSON.parse(localStorage.getItem('ph_applications') || '[]');
+async function loadFeeTable() {
   const tbody  = document.querySelector('#fee-table tbody');
   if (!tbody) return;
-  tbody.innerHTML = '';
+  tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Loading fees...</td></tr>`;
 
-  let totalPaid = 0;
-  let totalFee  = 0;
+  try {
+    const snapshot = await getDocs(collection(db, "applications"));
+    tbody.innerHTML = '';
 
-  const courseFees = {
-    'Shopify Mastery': 17000, 'Amazon FBA': 22000, 'Daraz Selling': 12000,
-    'WordPress Pro': 19000, 'Freelancing': 15000, 'Digital Marketing': 12000,
-    'AI Tools': 12000, 'SEO Basics': 12000, 'Store Management': 12000,
-    'eBay Selling': 15000, 'Etsy Shop': 17000, 'Walmart Selling': 17000
-  };
+    if (snapshot.empty) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:30px;">No fee data available</td></tr>`;
+      updateFeeStatsCards(0, 0);
+      return;
+    }
 
-  apps.forEach(app => {
-    const fee       = courseFees[app.course] || parseInt(app.fee) || 0;
-    const isPaid    = app.status === 'Approved' || (app.txn && app.txn !== 'N/A');
-    const paid      = isPaid ? fee : 0;
-    const remaining = fee - paid;
-    const statusCls = isPaid ? 'green' : 'amber';
-    const statusTxt = isPaid ? 'Paid' : 'Pending';
+    let totalPaid = 0;
+    let totalFee  = 0;
+    let hasData = false;
 
-    totalFee  += fee;
-    totalPaid += paid;
+    const courseFees = {
+      'Shopify Mastery': 17000, 'Amazon FBA': 22000, 'Daraz Selling': 12000,
+      'WordPress Pro': 19000, 'Freelancing': 15000, 'Digital Marketing': 12000,
+      'AI Tools': 12000, 'SEO Basics': 12000, 'Store Management': 12000,
+      'eBay Selling': 15000, 'Etsy Shop': 17000, 'Walmart Selling': 17000
+    };
 
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${app.name}</td>
-      <td>${app.course}</td>
-      <td>PKR ${fee.toLocaleString()}</td>
-      <td>PKR ${paid.toLocaleString()}</td>
-      <td>PKR ${remaining.toLocaleString()}</td>
-      <td>${app.date}</td>
-      <td><span class="db-pill ${statusCls}">${statusTxt}</span></td>`;
-    tbody.appendChild(tr);
-  });
+    snapshot.forEach(docSnap => {
+      const app = docSnap.data();
+      if (!app.course) return; // Skip if no course
 
-  // Update fee stats cards
+      hasData = true;
+      const fee       = courseFees[app.course] || parseInt(app.fee) || 0;
+      
+      // Determine if paid based on status and payment fields
+      const isPaid = 
+        app.status === 'Approved' || 
+        (app.txn && app.txn !== 'N/A') || 
+        (app.payment && app.payment.toLowerCase() !== 'pending' && app.payment !== '');
+        
+      const paid      = isPaid ? fee : 0;
+      const remaining = fee - paid;
+      const statusCls = isPaid ? 'green' : 'amber';
+      const statusTxt = isPaid ? 'Paid' : 'Pending';
+
+      totalFee  += fee;
+      totalPaid += paid;
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${escapeHTML(app.name || '-')}</td>
+        <td>${escapeHTML(app.course)}</td>
+        <td>PKR ${fee.toLocaleString()}</td>
+        <td>PKR ${paid.toLocaleString()}</td>
+        <td>PKR ${remaining.toLocaleString()}</td>
+        <td>${escapeHTML(app.date || app.applied || '-')}</td>
+        <td><span class="db-pill ${statusCls}">${statusTxt}</span></td>`;
+      tbody.appendChild(tr);
+    });
+
+    if (!hasData) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:30px;">No fee data available</td></tr>`;
+    }
+
+    updateFeeStatsCards(totalFee, totalPaid);
+  } catch (error) {
+    console.error("Firebase Fees Error:", error);
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#dc2626;padding:30px;">Failed to load fee data</td></tr>`;
+  }
+}
+
+function updateFeeStatsCards(totalFee, totalPaid) {
   const feeStats = document.querySelectorAll('#sec-fees .db-stat-card > div strong');
   if (feeStats[0]) feeStats[0].textContent = 'PKR ' + totalFee.toLocaleString();
   if (feeStats[1]) feeStats[1].textContent = 'PKR ' + totalPaid.toLocaleString();
@@ -901,15 +1218,14 @@ function loadFeeTable() {
   const rate = totalFee > 0 ? Math.round((totalPaid / totalFee) * 100) : 0;
   if (feeStats[3]) feeStats[3].textContent = rate + '%';
 
-  // Update overview fee card
   const ovStats = document.querySelectorAll('#sec-overview .db-stats-grid .db-stat-card > div strong');
   if (ovStats[3]) ovStats[3].textContent = 'PKR ' + totalPaid.toLocaleString();
 
-  // Update quick stats fee collection
   document.querySelectorAll('.db-quick-list li').forEach(li => {
     const span = li.querySelector('span');
-    if (span?.textContent === 'Fee Collection') {
-      li.querySelector('strong').textContent = 'PKR ' + totalPaid.toLocaleString();
+    if (span && (span.textContent === 'Fee Collection' || span.textContent === 'Total Paid')) {
+      const strong = li.querySelector('strong');
+      if (strong) strong.textContent = 'PKR ' + totalPaid.toLocaleString();
     }
   });
 }
@@ -917,72 +1233,238 @@ function loadFeeTable() {
 // ========================
 // MESSAGES NOTIFICATIONS
 // ========================
-function loadMessages() {
-  const apps   = JSON.parse(localStorage.getItem('ph_applications') || '[]');
-  const msgEl  = document.querySelector('#sec-messages .db-msg-list');
+async function loadMessages() {
+  const msgEl = document.querySelector('#sec-messages .db-msg-list');
   const notifBell = document.querySelector('.db-notif');
+
   if (!msgEl) return;
 
-  const pending = apps.filter(a => a.status === 'Pending');
-  msgEl.innerHTML = '';
+  msgEl.innerHTML = `
+    <li style="padding:36px;text-align:center;color:#94a3b8;">
+      Loading messages...
+    </li>
+  `;
 
-  if (!apps.length) {
-    msgEl.innerHTML = `<li class="db-msg-empty" style="padding:36px;text-align:center;color:#94a3b8;font-size:.88rem">No messages yet</li>`;
-  } else {
-    apps.forEach(app => {
-      const isUnread = app.status === 'Pending';
+  try {
+    const snapshot = await getDocs(collection(db, 'messages'));
+
+    msgEl.innerHTML = '';
+
+    if (snapshot.empty) {
+      msgEl.innerHTML = `
+        <li style="padding:36px;text-align:center;color:#94a3b8;">
+          No messages yet
+        </li>
+      `;
+      return;
+    }
+
+    let unreadCount = 0;
+
+    snapshot.forEach((docSnap) => {
+      const msg = docSnap.data();
+
+      const name = msg.name || 'Unknown';
+      const email = msg.email || '';
+      const phone = msg.phone || '';
+      const subject = msg.business || msg.interest || 'Website Message';
+      const body = msg.message || '';
+      const status = msg.status || 'unread';
+
+      if (status === 'unread') unreadCount++;
+
+      const initials = name
+        .split(' ')
+        .map(w => w[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase();
+
       const li = document.createElement('li');
-      li.className = `db-msg-item ${isUnread ? 'unread' : ''}`;
-      li.style.cssText = 'display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.05);transition:background .2s;';
-      li.onmouseover = () => li.style.background = '#f8fafc';
-      li.onmouseout  = () => li.style.background  = '';
-      const initials = app.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-      const statusColor = app.status==='Approved'?'#16a34a':app.status==='Rejected'?'#dc2626':'#d97706';
+
+      li.className = `db-msg-item ${status === 'unread' ? 'unread' : ''}`;
+
+      li.style.cssText = `
+        display:flex;
+        align-items:center;
+        gap:12px;
+        padding:14px 16px;
+        cursor:pointer;
+        border-bottom:1px solid rgba(0,0,0,0.05);
+        transition:background .2s;
+      `;
+
       li.innerHTML = `
-        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#8B0000,#D4AF37);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.8rem;flex-shrink:0">${initials}</div>
+        <div style="
+          width:40px;
+          height:40px;
+          border-radius:50%;
+          background:linear-gradient(135deg,#8B0000,#D4AF37);
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color:#fff;
+          font-weight:700;
+          font-size:.8rem;
+          flex-shrink:0;
+        ">
+          ${escapeHTML(initials)}
+        </div>
+
         <div style="flex:1;min-width:0">
-          <div style="font-weight:700;font-size:.88rem;color:#1e293b">${app.name} ${isUnread?'<span style="background:#8B0000;color:#fff;font-size:.65rem;padding:2px 6px;border-radius:10px;margin-left:4px">New</span>':''}</div>
-          <div style="font-size:.78rem;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Enrolled: ${app.course}</div>
-          <div style="font-size:.72rem;color:${statusColor};font-weight:600">${app.status} · ${app.date}</div>
-        </div>`;
-      li.onclick = () => showMsg(li, app.name, `Enrollment: ${app.course}`,
-        `<p><strong>Name:</strong> ${app.name}</p>
-         <p><strong>Phone:</strong> ${app.phone}</p>
-         <p><strong>Email:</strong> ${app.email}</p>
-         <p><strong>Course:</strong> ${app.course}</p>
-         <p><strong>Payment:</strong> ${app.payment}</p>
-         <p><strong>TXN ID:</strong> ${app.txn}</p>
-         <p><strong>Date:</strong> ${app.date}</p>
-         <p><strong>Status:</strong> <span style="color:${statusColor};font-weight:700">${app.status}</span></p>
-         <p><strong>Enrollment ID:</strong> ${app.enrollID}</p>`);
+
+          <div style="
+            font-weight:700;
+            font-size:.88rem;
+            color:#1e293b;
+          ">
+            ${escapeHTML(name)}
+
+            ${
+              status === 'unread'
+                ? `<span style="
+                    background:#8B0000;
+                    color:#fff;
+                    font-size:.65rem;
+                    padding:2px 6px;
+                    border-radius:10px;
+                    margin-left:4px;
+                  ">New</span>`
+                : ''
+            }
+          </div>
+
+          <div style="
+            font-size:.78rem;
+            color:#64748b;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+          ">
+            ${escapeHTML(subject)}
+          </div>
+
+          <div style="
+            font-size:.72rem;
+            color:#64748b;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+          ">
+            ${escapeHTML(body)}
+          </div>
+
+        </div>
+      `;
+
+      li.onmouseover = () => {
+        li.style.background = '#f8fafc';
+      };
+
+      li.onmouseout = () => {
+        li.style.background = '';
+      };
+
+      li.onclick = async () => {
+
+        showMsg(
+          li,
+          name,
+          subject,
+          `
+            <p><strong>Name:</strong> ${escapeHTML(name)}</p>
+            <p><strong>Email:</strong> ${escapeHTML(email)}</p>
+            <p><strong>Phone:</strong> ${escapeHTML(phone)}</p>
+            <p><strong>Business:</strong> ${escapeHTML(msg.business || '—')}</p>
+            <p><strong>Interest:</strong> ${escapeHTML(msg.interest || '—')}</p>
+            <p><strong>Message:</strong> ${escapeHTML(body)}</p>
+          `
+        );
+
+        // Mark message as read
+        if (status === 'unread') {
+          try {
+            await updateDoc(
+              doc(db, 'messages', docSnap.id),
+              { status: 'read' }
+            );
+          } catch (err) {
+            console.error('Read status error:', err);
+          }
+        }
+      };
+
       msgEl.appendChild(li);
     });
-  }
 
-  // Notification bell badge
-  const unreadCount = pending.length;
-  if (notifBell && unreadCount > 0) {
-    notifBell.style.position = 'relative';
-    let badge = notifBell.querySelector('.notif-badge');
-    if (!badge) { badge = document.createElement('span'); badge.className = 'notif-badge'; notifBell.appendChild(badge); }
-    badge.textContent = unreadCount;
-    badge.style.cssText = 'position:absolute;top:-4px;right:-4px;background:#8B0000;color:#fff;font-size:.6rem;font-weight:700;padding:2px 5px;border-radius:10px;min-width:16px;text-align:center;';
-  }
+    // Notification badge
+    if (notifBell) {
 
-  // Update unread messages quick stat
-  document.querySelectorAll('.db-quick-list li').forEach(li => {
-    const span = li.querySelector('span');
-    if (span?.textContent === 'Unread Messages') {
-      li.querySelector('strong').textContent = unreadCount;
+      notifBell.style.position = 'relative';
+
+      let badge = notifBell.querySelector('.notif-badge');
+
+      if (unreadCount > 0) {
+
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'notif-badge';
+          notifBell.appendChild(badge);
+        }
+
+        badge.textContent = unreadCount;
+
+        badge.style.cssText = `
+          position:absolute;
+          top:-4px;
+          right:-4px;
+          background:#8B0000;
+          color:#fff;
+          font-size:.6rem;
+          font-weight:700;
+          padding:2px 5px;
+          border-radius:10px;
+          min-width:16px;
+          text-align:center;
+        `;
+
+      } else {
+
+        if (badge) badge.remove();
+
+      }
     }
-  });
 
-  // Notification bell click
-  if (notifBell) {
-    notifBell.onclick = () => {
-      navigateTo('messages');
-      showToast(`${unreadCount} pending enrollment${unreadCount !== 1 ? 's' : ''}`, 'info');
-    };
+    // Quick stat
+    document.querySelectorAll('.db-quick-list li').forEach(li => {
+
+      const span = li.querySelector('span');
+
+      if (span?.textContent.trim() === 'Unread Messages') {
+
+        const strong = li.querySelector('strong');
+
+        if (strong) {
+          strong.textContent = unreadCount;
+        }
+
+      }
+
+    });
+
+  } catch (error) {
+
+    console.error('Firebase Messages Error:', error);
+
+    msgEl.innerHTML = `
+      <li style="
+        padding:36px;
+        text-align:center;
+        color:#dc2626;
+      ">
+        Failed to load messages
+      </li>
+    `;
   }
 }
 
@@ -994,29 +1476,246 @@ function loadAttendanceStudents() {
   const tbody    = document.querySelector('#sec-attendance .db-table tbody');
   if (!selector || !tbody) return;
 
-  const apps = JSON.parse(localStorage.getItem('ph_applications') || '[]');
+  async function renderAttForCourse(courseName) {
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Loading attendance...</td></tr>`;
+    try {
+      // Fetch applications
+      const appsSnap = await getDocs(collection(db, "applications"));
+      const courseStudents = [];
+      appsSnap.forEach(docSnap => {
+        const app = docSnap.data();
+        if (app.status === 'Approved' && app.course === courseName) {
+          courseStudents.push({ id: docSnap.id, ...app });
+        }
+      });
 
-  function renderAttForCourse(courseName) {
-    tbody.innerHTML = '';
-    const courseStudents = apps.filter(a => a.course === courseName && a.status === 'Approved');
-    if (!courseStudents.length) {
-      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:24px">No enrolled students in this course</td></tr>`;
-      return;
+      if (!courseStudents.length) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:24px">No enrolled students in this course</td></tr>`;
+        return;
+      }
+
+      // Fetch attendance history for the course
+      const attSnap = await getDocs(collection(db, "attendance"));
+      const attendanceData = [];
+      attSnap.forEach(docSnap => {
+        const att = docSnap.data();
+        if (att.course === courseName) {
+          attendanceData.push({ id: docSnap.id, ...att });
+        }
+      });
+
+      const today = new Date().toLocaleDateString("en-GB");
+
+      tbody.innerHTML = '';
+      courseStudents.forEach(app => {
+        // Calculate history
+        const uniqueDates = new Set(attendanceData.map(a => a.date));
+        const totalDays = uniqueDates.size;
+        
+        // Count present days for this student
+        const studentAtt = attendanceData.filter(a => a.studentId === app.id);
+        const presentDays = studentAtt.filter(a => a.present).length;
+        
+        const percentage = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
+        
+        // Did student attend today?
+        const todayRecord = studentAtt.find(a => a.date === today);
+        const isPresentToday = todayRecord ? todayRecord.present : false;
+
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-student-id', app.id);
+        tr.setAttribute('data-student-name', app.name);
+        if (todayRecord) {
+            tr.setAttribute('data-attendance-id', todayRecord.id);
+        }
+
+        tr.innerHTML = `
+          <td>${escapeHTML(app.name || '-')}</td>
+          <td>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+              <input type="checkbox" class="att-checkbox" style="width:16px;height:16px;accent-color:#8B0000" ${isPresentToday ? 'checked' : ''} /> 
+              Present
+            </label>
+          </td>
+          <td>${presentDays}/${totalDays}</td>
+          <td>${percentage}%</td>`;
+        tbody.appendChild(tr);
+      });
+    } catch (error) {
+      console.error("Failed to load attendance", error);
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#dc2626;padding:24px">Failed to load attendance</td></tr>`;
     }
-    courseStudents.forEach(app => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${app.name}</td>
-        <td><label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" style="width:16px;height:16px;accent-color:#8B0000" /> Present</label></td>
-        <td>0</td>
-        <td>0%</td>`;
-      tbody.appendChild(tr);
-    });
   }
 
+  // Ensure listener is only added once
+  if (!selector.dataset.listenerAdded) {
+    selector.addEventListener('change', () => renderAttForCourse(selector.value));
+    selector.dataset.listenerAdded = 'true';
+  }
+  
   renderAttForCourse(selector.value);
-  selector.addEventListener('change', () => renderAttForCourse(selector.value));
 }
+
+// =====================================
+// INTERNSHIPS — FIREBASE
+// =====================================
+
+async function loadInternships() {
+  const tbody = document.querySelector('#intern-table tbody');
+
+  if (!tbody) return;
+
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="6" style="text-align:center;">
+        Loading internship applications...
+      </td>
+    </tr>
+  `;
+
+  try {
+    const snapshot = await getDocs(
+      collection(db, 'internshipApplications')
+    );
+
+    tbody.innerHTML = '';
+
+    if (snapshot.empty) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6"
+              style="text-align:center;color:#94a3b8;padding:30px;">
+            No internship applications yet
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    snapshot.forEach((docSnap) => {
+      const app = docSnap.data();
+
+      const name   = app.fullName || app.name || '-';
+      const field  = app.internshipField || app.field || '-';
+      const mode   = app.preferredMode || app.mode || '-';
+      const date   = app.submissionDate || app.date || '-';
+      const status = app.status || 'Pending';
+
+      const statusCls =
+        status === 'Approved' ? 'green' :
+        status === 'Rejected' ? 'red'   : 'amber';
+
+      const tr = document.createElement('tr');
+      tr.setAttribute('data-intern-id', docSnap.id);
+
+      tr.innerHTML = `
+        <td>${escapeHTML(name)}</td>
+        <td>${escapeHTML(field)}</td>
+        <td>${escapeHTML(mode)}</td>
+        <td>${escapeHTML(date)}</td>
+        <td><span class="db-pill ${statusCls}">${escapeHTML(status)}</span></td>
+        <td>
+          <button class="db-btn-sm" onclick="viewFirebaseInternApp('${docSnap.id}')">View</button>
+          ${status !== 'Approved' ? `<button class="db-btn-sm" onclick="approveFirebaseInternApp('${docSnap.id}')">Approve</button>` : ''}
+          ${status !== 'Rejected' ? `<button class="db-btn-sm" onclick="rejectFirebaseInternApp('${docSnap.id}')">Reject</button>` : ''}
+        </td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+
+  } catch (error) {
+    console.error('Firebase Internship Error:', error);
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6"
+            style="text-align:center;color:#dc2626;padding:30px;">
+          Failed to load internship applications
+        </td>
+      </tr>
+    `;
+  }
+}
+
+// =====================================
+// VIEW INTERNSHIP APPLICATION
+// =====================================
+
+window.viewFirebaseInternApp = async function(id) {
+  try {
+    const snapshot = await getDocs(collection(db, 'internshipApplications'));
+    const found = snapshot.docs.find(d => d.id === id);
+    if (!found) { showToast('Application not found'); return; }
+
+    const app = found.data();
+
+    let modal = document.getElementById('internModal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'internModal';
+      modal.className = 'db-modal';
+      document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+      <div class="db-modal-box">
+        <div class="db-modal-head">
+          <h3>Internship Application</h3>
+          <button class="db-modal-close" onclick="closeModal('internModal')">✕</button>
+        </div>
+        <div style="padding:20px;line-height:2;">
+          <p><strong>Name:</strong> ${escapeHTML(app.fullName || app.name || '-')}</p>
+          <p><strong>WhatsApp:</strong> ${escapeHTML(app.whatsapp || '-')}</p>
+          <p><strong>Email:</strong> ${escapeHTML(app.email || '-')}</p>
+          <p><strong>City:</strong> ${escapeHTML(app.city || '-')}</p>
+          <p><strong>Field:</strong> ${escapeHTML(app.internshipField || app.field || '-')}</p>
+          <p><strong>Mode:</strong> ${escapeHTML(app.preferredMode || app.mode || '-')}</p>
+          <p><strong>Reason:</strong> ${escapeHTML(app.reason || '—')}</p>
+          <p><strong>Source:</strong> ${escapeHTML(app.source || '—')}</p>
+          <p><strong>Date:</strong> ${escapeHTML(app.submissionDate || app.date || '-')} ${escapeHTML(app.submissionTime || '')}</p>
+          <p><strong>Status:</strong> ${escapeHTML(app.status || 'Pending')}</p>
+        </div>
+      </div>
+    `;
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+  } catch (error) {
+    console.error('View internship error:', error);
+    showToast('Could not open application');
+  }
+};
+
+// =====================================
+// APPROVE INTERNSHIP
+// =====================================
+
+window.approveFirebaseInternApp = async function(id) {
+  try {
+    await updateDoc(doc(db, 'internshipApplications', id), { status: 'Approved' });
+    showToast('Internship application approved');
+    await loadInternships();
+  } catch (error) {
+    console.error('Approve internship error:', error);
+    showToast('Could not approve internship application');
+  }
+};
+
+// =====================================
+// REJECT INTERNSHIP
+// =====================================
+
+window.rejectFirebaseInternApp = async function(id) {
+  try {
+    await updateDoc(doc(db, 'internshipApplications', id), { status: 'Rejected' });
+    showToast('Internship application rejected');
+    await loadInternships();
+  } catch (error) {
+    console.error('Reject internship error:', error);
+    showToast('Could not reject internship application');
+  }
+};
 
 // ========================
 // INIT ALL ON DOM READY
@@ -1025,6 +1724,11 @@ document.addEventListener('DOMContentLoaded', function() {
   loadFeeTable();
   loadMessages();
   loadAttendanceStudents();
+  loadInternships();
+  
+  if (typeof loadCertificatesFromFirebase === 'function') {
+    loadCertificatesFromFirebase();
+  }
 });
 
 // ========================
