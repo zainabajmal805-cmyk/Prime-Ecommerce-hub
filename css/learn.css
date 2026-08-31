@@ -148,7 +148,7 @@
 }
 
 .ln-course-badge {
-  background: rgba(255,255,255,0.25);
+  background: #e11d48;
   color: #fff;
   font-size: 0.68rem;
   font-weight: 700;
@@ -156,7 +156,8 @@
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.3);
+  border: none;
+  box-shadow: 0 2px 8px rgba(225,29,72,0.3);
 }
 
 .ln-course-body {
