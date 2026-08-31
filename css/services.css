@@ -531,3 +531,42 @@
   .sv-section { padding: 56px 0; }
   .sv-hero { padding: 80px 0 60px; }
 }
+
+
+/* ── NEW SERVICE CARDS (UK + E-commerce) ── */
+.sv-card--highlight {
+  border-color: #e11d48;
+  position: relative;
+}
+
+.sv-card-tag {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: linear-gradient(135deg, #e11d48, #be123c);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.sv-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 9px 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #e11d48, #be123c);
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(225,29,72,0.25);
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.sv-card-cta:hover { opacity: 0.9; transform: translateY(-2px); }

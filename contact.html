@@ -106,15 +106,16 @@
 
                 <form class="contact-form contact-form--full" id="contactForm">
                     <div class="input-row">
-                        <input type="text" placeholder="Full Name" aria-label="Full Name" />
-                        <input type="email" placeholder="Email" aria-label="Email" />
+                        <input type="text" id="ct-name" placeholder="Full Name" aria-label="Full Name" required />
+                        <input type="email" id="ct-email" placeholder="Email" aria-label="Email" required />
                     </div>
                     <div class="input-row">
-                        <input type="tel" placeholder="Phone" aria-label="Phone" />
-                        <input type="text" placeholder="Business/Company" aria-label="Business/Company" />
+                        <input type="tel" id="ct-phone" placeholder="Phone" aria-label="Phone" />
+                        <input type="text" id="ct-business" placeholder="Business/Company" aria-label="Business/Company" />
                     </div>
                     <div class="input-row">
-                        <select aria-label="Interested In">
+                        <select id="ct-service" aria-label="Interested In">
+                            <option value="">Select a Service</option>
                             <option>Ecommerce Hub</option>
                             <option>Amazon</option>
                             <option>Daraz</option>
@@ -124,11 +125,15 @@
                             <option>AI Skills</option>
                             <option>Digital Marketing</option>
                             <option>Store Management</option>
+                            <option>UK LTD Company Formation</option>
+                            <option>UK LLC Company Setup</option>
+                            <option>E-commerce Business Setup</option>
                             <option>Other</option>
                         </select>
                     </div>
-                    <textarea rows="6" placeholder="Message" aria-label="Message"></textarea>
+                    <textarea id="ct-message" rows="6" placeholder="Message" aria-label="Message"></textarea>
                     <button type="submit" class="btn btn-primary">Send Message</button>
+                    <p id="ct-status" style="margin-top:12px;font-size:0.88rem;font-weight:600;display:none;"></p>
                 </form>
             </div>
         </section>
@@ -248,23 +253,45 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  // ── Auto-detect service from URL ?service=...
+  const urlParams = new URLSearchParams(window.location.search);
+  const preService = urlParams.get('service');
+  if (preService) {
+    const select = document.getElementById('ct-service');
+    if (select) {
+      // Try to match existing option
+      const match = Array.from(select.options).find(
+        o => o.value.toLowerCase() === preService.toLowerCase() ||
+             o.text.toLowerCase()  === preService.toLowerCase()
+      );
+      if (match) {
+        match.selected = true;
+      } else {
+        // Add it if not found
+        const opt = document.createElement('option');
+        opt.value = preService;
+        opt.textContent = preService;
+        opt.selected = true;
+        select.appendChild(opt);
+      }
+    }
+  }
+
+  // ── Form submit → Firebase messages collection
   document.getElementById("contactForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    const inputs = this.querySelectorAll("input");
-    const select = this.querySelector("select");
-    const textarea = this.querySelector("textarea");
-    const button = this.querySelector("button");
-
-    const name = inputs[0].value.trim();
-    const email = inputs[1].value.trim();
-    const phone = inputs[2].value.trim();
-    const business = inputs[3].value.trim();
-    const interest = select.value;
-    const message = textarea.value.trim();
+    const name     = document.getElementById('ct-name')?.value.trim();
+    const email    = document.getElementById('ct-email')?.value.trim();
+    const phone    = document.getElementById('ct-phone')?.value.trim();
+    const business = document.getElementById('ct-business')?.value.trim();
+    const service  = document.getElementById('ct-service')?.value;
+    const message  = document.getElementById('ct-message')?.value.trim();
+    const status   = document.getElementById('ct-status');
+    const button   = this.querySelector("button[type='submit']");
 
     if (!name || !email || !message) {
-      alert("Please fill in your Name, Email and Message.");
+      if (status) { status.style.display='block'; status.style.color='#e11d48'; status.textContent='Please fill in Name, Email and Message.'; }
       return;
     }
 
@@ -273,23 +300,28 @@
 
     try {
       await addDoc(collection(db, "messages"), {
-        name: name,
-        email: email,
-        phone: phone,
-        business: business,
-        interest: interest,
-        message: message,
-        status: "unread",
+        name:      name,
+        email:     email,
+        phone:     phone    || '',
+        business:  business || '',
+        service:   service  || '',
+        message:   message,
+        status:    'New',
         createdAt: serverTimestamp()
       });
 
-      alert("Thank you! Your message has been sent successfully.");
-
+      if (status) { status.style.display='block'; status.style.color='#16a34a'; status.textContent='Thank you! Your message has been sent successfully.'; }
       this.reset();
+      // Re-apply URL service after reset
+      if (preService && document.getElementById('ct-service')) {
+        const sel = document.getElementById('ct-service');
+        const m = Array.from(sel.options).find(o => o.value === preService || o.text === preService);
+        if (m) m.selected = true;
+      }
 
     } catch (error) {
       console.error("Message error:", error);
-      alert("Message send nahi hua. Please try again.");
+      if (status) { status.style.display='block'; status.style.color='#e11d48'; status.textContent='Message could not be sent. Please try again.'; }
     }
 
     button.disabled = false;
