@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="images/logo.png" />
   <title>Course Details | Prime Ecommerce Hub - E-commerce Training Pakistan</title>
   <meta name="description" content="View detailed curriculum, modules and enrollment for e-commerce courses at Prime Ecommerce Hub. Amazon FBA, Shopify, Daraz, Freelancing, WordPress, AI Tools and more." />
   <meta name="keywords" content="course details Prime Ecommerce Hub, Amazon FBA curriculum, Shopify course modules, ecommerce training Pakistan" />
@@ -50,12 +51,15 @@
         <strong style="font-family: Georgia, serif; text-transform: uppercase; letter-spacing: 2px; font-size: 1.15rem;">Prime</strong><span>E-COMMERCE HUB</span>
       </div>
     </a>
-    <nav class="cd-nav-links">
+    <button class="cd-hamburger" id="cdHamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="cd-nav-links" id="cdNavLinks">
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
       <a href="services.html">Services</a>
       <div class="nav-dropdown">
-        <a href="learn.html" class="nav-dropdown-trigger">Courses <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-top:-1px;"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <a href="learn.html" class="nav-dropdown-trigger active">Courses <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-top:-1px;"><polyline points="6 9 12 15 18 9"/></svg></a>
         <div class="nav-dropdown-menu">
           <a href="learn.html">Courses</a>
           <a href="internship.html">Internship</a>
@@ -63,7 +67,7 @@
       </div>
       <a href="events.html">Events</a>
       <a href="contact.html">Contact</a>
-      <a href="dashboard.html">Admin Login</a>
+      <a href="../Admin Portal/index.html">Admin Login</a>
     </nav>
     <a href="apply.html" class="cd-enroll-btn" id="navEnrollBtn">Enroll Now</a>
   </div>
@@ -205,7 +209,7 @@
       <a href="about.html" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">About</a>
       <a href="services.html" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">Services</a>
       <a href="contact.html" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">Contact</a>
-      <a href="dashboard.html" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">Dashboard</a>
+      <a href="../Admin Portal/index.html" style="color:#94a3b8; text-decoration:none; font-size:0.9rem;">Dashboard</a>
     </div>
     <div class="footer-col" style="display: flex; flex-direction: column; gap: 12px;">
       <h4 style="color:#fff; font-size: 1.1rem; margin-bottom: 8px;">Contact</h4>
@@ -221,7 +225,13 @@
 </footer>
 
 <script src="js/course-detail.js"></script>
-  <script>  // Footer Rating
+<script>
+  document.getElementById('cdHamburger')?.addEventListener('click', function() {
+    document.getElementById('cdNavLinks')?.classList.toggle('open');
+    this.classList.toggle('active');
+  });
+</script>
+<script>  // Footer Rating
   (function(){
     const stars = document.querySelectorAll('#footerStars span');
     const ratingMsg = document.getElementById('footerRatingMsg');
@@ -249,6 +259,7 @@
   })();</script>
 </body>
 </html>
+
 
 
 

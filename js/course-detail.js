@@ -5,7 +5,7 @@
 const COURSES = {
 
   "Shopify Mastery": {
-    icon: "cart",
+    icon: "shopify",
     badge: "E-commerce Store Building",
     fee: { online: 17000, physical: 20000 },
     tagline: "Build, launch and scale a professional Shopify store from scratch.",
@@ -17,7 +17,7 @@ const COURSES = {
       { icon: "mode", label: "Mode", value: "Online & Offline" },
       { icon: "cert", label: "Certificate", value: "On Completion" },
       { icon: "support", label: "Support", value: "WhatsApp Group" },
-      { icon: "clock", label: "Duration", value: "1.5 Months + 15 Days Internship" }
+      { icon: "clock", label: "Course Duration", value: "1.5 Months" }
     ],
     learn: [
       "Set up a professional Shopify store from scratch",
@@ -61,7 +61,7 @@ const COURSES = {
       { icon: "mode", label: "Mode", value: "Online & Offline" },
       { icon: "cert", label: "Certificate", value: "On Completion" },
       { icon: "support", label: "Support", value: "WhatsApp Group" },
-      { icon: "clock", label: "Duration", value: "1.5 Months + 15 Days Internship" }
+      { icon: "clock", label: "Course Duration", value: "1.5 Months" }
     ],
     learn: [
       "Research winning products using Helium 10, Jungle Scout and product hunting tools",
@@ -106,7 +106,7 @@ const COURSES = {
       { icon: "mode", label: "Mode", value: "Online & Offline" },
       { icon: "cert", label: "Certificate", value: "On Completion" },
       { icon: "support", label: "Support", value: "WhatsApp Group" },
-      { icon: "clock", label: "Duration", value: "1.5 Months + 15 Days Internship" }
+      { icon: "clock", label: "Course Duration", value: "1.5 Months" }
     ],
     learn: [
       "Create and verify a professional Daraz seller account",
@@ -149,7 +149,7 @@ const COURSES = {
       { icon: "mode", label: "Mode", value: "Online & Offline" },
       { icon: "cert", label: "Certificate", value: "On Completion" },
       { icon: "support", label: "Support", value: "WhatsApp Group" },
-      { icon: "clock", label: "Duration", value: "1.5 Months + 15 Days Internship" }
+      { icon: "clock", label: "Course Duration", value: "1.5 Months" }
     ],
     learn: [
       "Install and configure WordPress on hosting",
@@ -192,7 +192,7 @@ const COURSES = {
       { icon: "mode", label: "Mode", value: "Online & Offline" },
       { icon: "cert", label: "Certificate", value: "On Completion" },
       { icon: "support", label: "Support", value: "WhatsApp Group" },
-      { icon: "clock", label: "Duration", value: "1.5 Months + 15 Days Internship" }
+      { icon: "clock", label: "Course Duration", value: "1.5 Months" }
     ],
     learn: [
       "Create a professional Fiverr and Upwork profile",
@@ -236,7 +236,7 @@ const COURSES = {
       { icon: "mode", label: "Mode", value: "Online & Offline" },
       { icon: "cert", label: "Certificate", value: "On Completion" },
       { icon: "support", label: "Support", value: "WhatsApp Group" },
-      { icon: "clock", label: "Duration", value: "1.5 Months + 15 Days Internship" }
+      { icon: "clock", label: "Course Duration", value: "1.5 Months" }
     ],
     learn: [
       "Set up and run Facebook and Instagram ad campaigns",
@@ -279,7 +279,7 @@ const COURSES = {
       { icon: "mode", label: "Mode", value: "Online & Offline" },
       { icon: "cert", label: "Certificate", value: "On Completion" },
       { icon: "support", label: "Support", value: "WhatsApp Group" },
-      { icon: "clock", label: "Duration", value: "1.5 Months + 15 Days Internship" }
+      { icon: "clock", label: "Course Duration", value: "1.5 Months" }
     ],
     learn: [
       "Use ChatGPT effectively for business and content creation",
@@ -322,7 +322,7 @@ const COURSES = {
       { icon: "mode", label: "Mode", value: "Online & Offline" },
       { icon: "cert", label: "Certificate", value: "On Completion" },
       { icon: "support", label: "Support", value: "WhatsApp Group" },
-      { icon: "clock", label: "Duration", value: "1.5 Months + 15 Days Internship" }
+      { icon: "clock", label: "Course Duration", value: "1.5 Months" }
     ],
     learn: [
       "Conduct professional keyword research",
@@ -365,7 +365,7 @@ const COURSES = {
       { icon: "mode", label: "Mode", value: "Online & Offline" },
       { icon: "cert", label: "Certificate", value: "On Completion" },
       { icon: "support", label: "Support", value: "WhatsApp Group" },
-      { icon: "clock", label: "Duration", value: "1.5 Months + 15 Days Internship" }
+      { icon: "clock", label: "Course Duration", value: "1.5 Months" }
     ],
     learn: [
       "Process and fulfill orders efficiently and on time",
@@ -408,7 +408,7 @@ const COURSES = {
       { icon: "mode", label: "Mode", value: "Online & Offline" },
       { icon: "cert", label: "Certificate", value: "On Completion" },
       { icon: "support", label: "Support", value: "WhatsApp Group" },
-      { icon: "clock", label: "Duration", value: "1.5 Months + 15 Days Internship" }
+      { icon: "clock", label: "Course Duration", value: "1.5 Months" }
     ],
     learn: [
       "Create and optimize a professional eBay seller account",
@@ -452,7 +452,7 @@ const COURSES = {
       { icon: "mode", label: "Mode", value: "Online & Offline" },
       { icon: "cert", label: "Certificate", value: "On Completion" },
       { icon: "support", label: "Support", value: "WhatsApp Group" },
-      { icon: "clock", label: "Duration", value: "1.5 Months + 15 Days Internship" }
+      { icon: "clock", label: "Course Duration", value: "1.5 Months" }
     ],
     learn: [
       "Create and fully set up a professional Etsy shop",
@@ -484,7 +484,7 @@ const COURSES = {
   },
 
   "Walmart Selling": {
-    icon: "management",
+    icon: "walmart",
     badge: "Global Marketplace Selling",
     fee: { online: 17000, physical: 20000 },
     tagline: "Set up and grow your Walmart Marketplace seller account with product listings and sales strategies.",
@@ -496,7 +496,7 @@ const COURSES = {
       { icon: "mode", label: "Mode", value: "Online & Offline" },
       { icon: "cert", label: "Certificate", value: "On Completion" },
       { icon: "support", label: "Support", value: "WhatsApp Group" },
-      { icon: "clock", label: "Duration", value: "1.5 Months + 15 Days Internship" }
+      { icon: "clock", label: "Course Duration", value: "1.5 Months" }
     ],
     learn: [
       "Set up a professional Walmart Marketplace seller account",
@@ -532,15 +532,60 @@ const COURSES = {
 const ALL_COURSE_KEYS = Object.keys(COURSES);
 
 // ============================================================
+// HELPER: RESOLVE COURSE NAME & ALIASES
+// ============================================================
+function resolveCourseName(input) {
+  if (!input) return 'Shopify Mastery';
+  const clean = input.trim().toLowerCase();
+  
+  // Direct match
+  const directKey = Object.keys(COURSES).find(k => k.toLowerCase() === clean);
+  if (directKey) return directKey;
+
+  // Alias map
+  const aliases = {
+    'shopify': 'Shopify Mastery',
+    'shopify mastery': 'Shopify Mastery',
+    'amazon': 'Amazon FBA',
+    'amazon fba': 'Amazon FBA',
+    'daraz': 'Daraz Selling',
+    'daraz selling': 'Daraz Selling',
+    'wordpress': 'WordPress Pro',
+    'wordpress pro': 'WordPress Pro',
+    'freelancing': 'Freelancing',
+    'freelance': 'Freelancing',
+    'digital marketing': 'Digital Marketing',
+    'marketing': 'Digital Marketing',
+    'ai': 'AI Tools',
+    'ai tools': 'AI Tools',
+    'seo': 'SEO Basics',
+    'seo basics': 'SEO Basics',
+    'e-commerce seo': 'SEO Basics',
+    'ecommerce seo': 'SEO Basics',
+    'store': 'Store Management',
+    'store management': 'Store Management',
+    'ebay': 'eBay Selling',
+    'ebay selling': 'eBay Selling',
+    'etsy': 'Etsy Shop',
+    'etsy shop': 'Etsy Shop',
+    'walmart': 'Walmart Selling',
+    'walmart selling': 'Walmart Selling'
+  };
+
+  return aliases[clean] || 'Shopify Mastery';
+}
+
+// ============================================================
 // INIT
 // ============================================================
 function init() {
   const params     = new URLSearchParams(window.location.search);
-  const courseName = params.get('course') || 'Shopify Mastery';
+  const rawParam   = params.get('course');
+  const courseName = resolveCourseName(rawParam);
   const data       = COURSES[courseName] || COURSES['Shopify Mastery'];
 
   if (!data) {
-    document.body.innerHTML = '<div style="padding:60px;text-align:center;font-family:Inter,sans-serif"><h2>Course not found</h2><a href="index.html" style="color:#2563eb">Back to Home</a></div>';
+    document.body.innerHTML = '<div style="padding:60px;text-align:center;font-family:Inter,sans-serif"><h2>Course not found</h2><a href="index.html" style="color:#e11d48">Back to Home</a></div>';
     return;
   }
 
@@ -566,6 +611,7 @@ function init() {
   // Tags
   const tagsEl = document.getElementById('cdTags');
   if (tagsEl) {
+    tagsEl.innerHTML = '';
     data.tags.forEach(t => {
       const s = document.createElement('span');
       s.textContent = t;
@@ -594,6 +640,7 @@ function init() {
   // Overview cards
   const ogEl = document.getElementById('cdOverviewGrid');
   if (ogEl) {
+    ogEl.innerHTML = '';
     data.overview.forEach(item => {
       ogEl.innerHTML += `<div class="cd-ov-item"><div class="cd-ov-icon">${getOverviewIcon(item.icon)}</div><div><strong>${item.value}</strong><span>${item.label}</span></div></div>`;
     });
@@ -606,6 +653,7 @@ function init() {
   // What You Will Learn
   const learnEl = document.getElementById('cdLearnGrid');
   if (learnEl) {
+    learnEl.innerHTML = '';
     data.learn.forEach(text => {
       learnEl.innerHTML += `<div class="cd-learn-item"><span>&#10003;</span><p>${text}</p></div>`;
     });
@@ -614,6 +662,7 @@ function init() {
   // Modules accordion
   const modulesEl = document.getElementById('cdModules');
   if (modulesEl) {
+    modulesEl.innerHTML = '';
     data.modules.forEach((mod, i) => {
       const topics = mod.topics.map(t => `<li>${t}</li>`).join('');
       const isFirst = i === 0 ? 'open' : '';
@@ -634,6 +683,7 @@ function init() {
   // Skills
   const skillsEl = document.getElementById('cdSkills');
   if (skillsEl) {
+    skillsEl.innerHTML = '';
     data.skills.forEach(s => {
       skillsEl.innerHTML += `<span class="cd-skill-tag">${s}</span>`;
     });
@@ -642,6 +692,7 @@ function init() {
   // Who is it for
   const forEl = document.getElementById('cdForList');
   if (forEl) {
+    forEl.innerHTML = '';
     data.forList.forEach(item => {
       forEl.innerHTML += `<li>${item}</li>`;
     });
@@ -657,35 +708,37 @@ function init() {
   const stickyDesc = document.getElementById('cdStickyDesc');
   if (stickyDesc) stickyDesc.textContent = data.tagline;
 
-  // Fee display
-  if (data.fee) {
-    const perksEl = document.querySelector('.cd-sticky-perks');
-    if (perksEl) {
-      const feeHtml = `
-        <li style="margin-top:10px;padding-top:10px;border-top:1px solid #e2e8f0;">
-          <strong style="color:#1e293b;display:block;margin-bottom:6px;">Course Fee</strong>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <span style="background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;padding:4px 12px;border-radius:20px;font-size:0.78rem;font-weight:700">
-              &#128187; Online: PKR ${data.fee.online.toLocaleString()}
-              <span style="background:#16a34a;color:#fff;padding:2px 6px;border-radius:10px;font-size:0.65rem;margin-left:4px">-3000</span>
-            </span>
-            <span style="background:#f1f5f9;border:1px solid #cbd5e1;color:#334155;padding:4px 12px;border-radius:20px;font-size:0.78rem;font-weight:700">
-              &#127979; Physical: PKR ${data.fee.physical.toLocaleString()}
-            </span>
-          </div>
-        </li>`;
-      perksEl.insertAdjacentHTML('beforeend', feeHtml);
-    }
+  // Fee display in sticky sidebar
+  const perksEl = document.querySelector('.cd-sticky-perks');
+  if (perksEl && data.fee) {
+    // Remove existing fee item if any
+    const existingFee = perksEl.querySelector('.cd-fee-item');
+    if (existingFee) existingFee.remove();
+
+    const feeHtml = `
+      <li class="cd-fee-item" style="margin-top:10px;padding-top:10px;border-top:1px solid #e2e8f0;">
+        <strong style="color:#1e293b;display:block;margin-bottom:6px;">Course Fee</strong>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <span style="background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;padding:4px 12px;border-radius:20px;font-size:0.78rem;font-weight:700">
+            &#128187; Online: PKR ${data.fee.online.toLocaleString()}
+          </span>
+          <span style="background:#f1f5f9;border:1px solid #cbd5e1;color:#334155;padding:4px 12px;border-radius:20px;font-size:0.78rem;font-weight:700">
+            &#127979; Physical: PKR ${data.fee.physical.toLocaleString()}
+          </span>
+        </div>
+      </li>`;
+    perksEl.insertAdjacentHTML('beforeend', feeHtml);
   }
 
   // Other courses
   const otherEl = document.getElementById('cdOtherCourses');
   if (otherEl) {
+    otherEl.innerHTML = '';
     ALL_COURSE_KEYS.filter(k => k !== courseName).forEach(k => {
       const cd = COURSES[k];
       const div = document.createElement('div');
       div.className = 'cd-other-item';
-      div.innerHTML = `<div style="width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:#f1f5f9;flex-shrink:0">${getCourseIconSVG(cd.icon)}</div><div><strong>${k}</strong><small>View course</small></div>`;
+      div.innerHTML = `<div style="width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:#f1f5f9;flex-shrink:0">${getCourseIconSVG(cd.icon)}</div><div><strong>${k}</strong><small>View course &rarr;</small></div>`;
       div.addEventListener('click', () => {
         window.location.href = 'course-detail.html?course=' + encodeURIComponent(k);
       });
@@ -706,7 +759,7 @@ function getCourseIconSVG(icon) {
   const icons = {
     amazon:     `<svg viewBox="0 0 24 24" width="28" height="28" fill="none"><path d="M.045 18.02c.072-.116.187-.124.348-.022 3.636 2.11 7.594 3.166 11.87 3.166 2.852 0 5.668-.533 8.447-1.595l.315-.14c.138-.06.234-.1.293-.13.226-.088.39-.046.49.124.1.17.058.334-.13.49-.19.156-.495.37-.91.643-1.324.87-2.8 1.543-4.43 2.02C14.433 23.167 12.5 23.5 10.5 23.5c-4.36 0-8.368-1.077-12.024-3.23-.33-.19-.462-.438-.43-.74.033-.302.177-.456.433-.46l1.566-.05z" fill="#FF9900"/><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 110-16 8 8 0 010 16zm2.5-10h-5a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h3.5v1H9.5a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h5a.5.5 0 00.5-.5v-1a.5.5 0 00-.5-.5H11v-1h3.5a.5.5 0 00.5-.5v-1a.5.5 0 00-.5-.5z" fill="#FF9900"/></svg>`,
     shopify:    `<svg viewBox="0 0 24 24" width="28" height="28" fill="#96BF48"><path d="M15.337 3.07c-.014-.087-.09-.14-.18-.134-.087.007-2.048.153-2.048.153s-1.37-1.345-1.503-1.478C11.47 1.48 11.084 1.5 10.946 1.54c-.02.006-.4.124-.99.306A4.17 4.17 0 009.73.972C9.28.03 8.6-.28 7.985.22 6.3 1.55 5.95 4.74 5.83 6.35c-1.23.38-2.1.65-2.12.66-.65.204-.67.225-.755.835L2 18.5 16 21l6-1.294L20.36 3.8c-.116-.018-.242.034-.3.143L15.337 3.07zm-3.52.53c-.47.145-.993.307-1.556.482.153-.59.453-1.177.893-1.574.148-.134.355-.28.59-.35.23.48.3 1.145.074 1.44zm-1.83-.18c-.26.063-.527.149-.8.24-.077-.576-.028-1.178.18-1.74.237.1.43.386.62.71v.79zm5.91 1.11c-.02-.012-.04-.026-.062-.038-.97-.57-2.18-.67-3.19-.67-1.01 0-2.01.1-2.98.67L9.5 4.6 9.1 6l-.69 1.5-1.04 2.8L6.6 12.7l-.45 1.8-.2 1.3L5.8 17l-.15 1.7L16 20l5-1.1-1.1-14.47z"/></svg>`,
-    daraz:      `<svg viewBox="0 0 24 24" width="28" height="28"><rect width="24" height="24" rx="6" fill="#F85606"/><text x="12" y="16.5" text-anchor="middle" fill="white" font-size="11" font-weight="900" font-family="Arial,sans-serif">dara</text></svg>`,
+    daraz:      `<svg viewBox="0 0 24 24" width="28" height="28"><rect width="24" height="24" rx="6" fill="#F85606"/><text x="12" y="16.5" text-anchor="middle" fill="white" font-size="9" font-weight="900" font-family="Arial,sans-serif">daraz</text></svg>`,
     wordpress:  `<svg viewBox="0 0 24 24" width="28" height="28" fill="#21759B"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 1.542c2.405 0 4.605.924 6.247 2.43l-8.802 25.544A8.456 8.456 0 013.542 12c0-4.669 3.789-8.458 8.458-8.458zm0 16.916a8.422 8.422 0 01-4.2-1.123l4.458-12.946 4.567 12.516a8.42 8.42 0 01-4.825 1.553zm6.914-2.568l-3.892-10.672a.83.83 0 00-.055-.111c.596-1.57.92-3.088.92-4.285 0-.42-.028-.812-.077-1.17A8.44 8.44 0 0120.458 12a8.41 8.41 0 01-1.544 4.89z"/></svg>`,
     freelance:  `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#14a800" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>`,
     marketing:  `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#1877f2" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>`,
@@ -715,6 +768,7 @@ function getCourseIconSVG(icon) {
     management: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#e11d48" stroke-width="2"><path d="M9 17H5a2 2 0 00-2 2v2h18v-2a2 2 0 00-2-2h-4M12 3v10M8 7l4-4 4 4"/></svg>`,
     ebay:       `<svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="10" fill="#e53238"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="9" font-weight="bold">eBay</text></svg>`,
     etsy:       `<svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="10" fill="#f16521"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="10" font-weight="bold">E</text></svg>`,
+    walmart:    `<svg viewBox="0 0 32 32" width="28" height="28" fill="none"><rect width="32" height="32" rx="8" fill="#0071CE"/><text x="16" y="21" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="Arial">Walmart</text></svg>`,
     cart:       `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="white" stroke-width="2"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>`
   };
   return icons[icon] || icons['cart'];
@@ -732,4 +786,5 @@ function getOverviewIcon(key) {
 
 // Run
 init();
+
 

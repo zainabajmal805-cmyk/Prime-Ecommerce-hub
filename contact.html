@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="images/logo.png" />
     <title>Contact Us | Prime Ecommerce Hub - Sadiqabad, Pakistan</title>
     <meta name="description" content="Contact Prime Ecommerce Hub for e-commerce training, store setup, digital marketing and business support. Call +92-312-6772989 or visit us in Sadiqabad, Pakistan." />
     <meta name="keywords" content="contact Prime Ecommerce Hub, ecommerce support Pakistan, Sadiqabad ecommerce, +923126772989" />
@@ -58,16 +59,10 @@
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
       <a href="services.html">Services</a>
-      <div class="nav-dropdown">
-        <a href="learn.html" class="nav-dropdown-trigger">Courses <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-top:-1px;"><polyline points="6 9 12 15 18 9"/></svg></a>
-        <div class="nav-dropdown-menu">
-          <a href="learn.html">Courses</a>
-          <a href="internship.html">Internship</a>
-        </div>
-      </div>
+      <a href="learn.html">Courses</a>
+      <a href="internship.html">Internship</a>
       <a href="events.html">Events</a>
       <a href="contact.html" class="active">Contact</a>
-      <a href="dashboard.html">Admin Login</a>
     </nav>
     <a href="apply.html" class="nav-enroll-btn">Enroll Now</a>
   </div>
@@ -167,14 +162,16 @@
           <a href="apply.html">WordPress Pro</a>
           <a href="apply.html">Freelancing</a>
         </div>
-        <div class="footer-col">
-          <h4>Quick Links</h4>
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <a href="apply.html">Apply Now</a>
-          <a href="contact.html">Contact</a>
-          <a href="dashboard.html">Dashboard</a>
-        </div>
+              <div class="footer-col">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="learn.html">Courses</a>
+        <a href="internship.html">Internship</a>
+        <a href="events.html">Events</a>
+        <a href="contact.html">Contact</a>
+      </div>
         <div class="footer-col">
           <h4>Contact</h4>
           <a href="tel:+923126772989">+92-312-6772989</a>
@@ -290,13 +287,33 @@
     const status   = document.getElementById('ct-status');
     const button   = this.querySelector("button[type='submit']");
 
-    if (!name || !email || !message) {
-      if (status) { status.style.display='block'; status.style.color='#e11d48'; status.textContent='Please fill in Name, Email and Message.'; }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!name || name.length < 2) {
+      if (status) { status.style.display='block'; status.style.color='#e11d48'; status.textContent='Please enter your name.'; }
+      return;
+    }
+
+    if (!email || !emailRegex.test(email)) {
+      if (status) { status.style.display='block'; status.style.color='#e11d48'; status.textContent='Please enter a valid email address.'; }
+      return;
+    }
+
+    if (phone) {
+      const phoneClean = phone.replace(/[\s\-]/g, '');
+      const phoneRegex = /^((\+92)|(0092)|(92)|(0))?3[0-9]{9}$/;
+      if (!phoneRegex.test(phoneClean) && phoneClean.length < 10) {
+        if (status) { status.style.display='block'; status.style.color='#e11d48'; status.textContent='Please enter a valid phone number or leave it blank.'; }
+        return;
+      }
+    }
+
+    if (!message || message.length < 5) {
+      if (status) { status.style.display='block'; status.style.color='#e11d48'; status.textContent='Please enter a detailed message (at least 5 characters).'; }
       return;
     }
 
     button.disabled = true;
-    button.textContent = "Sending...";
+    button.textContent = "Sending Message...";
 
     try {
       await addDoc(collection(db, "messages"), {
@@ -310,7 +327,7 @@
         createdAt: serverTimestamp()
       });
 
-      if (status) { status.style.display='block'; status.style.color='#16a34a'; status.textContent='Thank you! Your message has been sent successfully.'; }
+      if (status) { status.style.display='block'; status.style.color='#16a34a'; status.textContent='Thank you! Your message has been sent successfully. Our team will contact you shortly.'; }
       this.reset();
       // Re-apply URL service after reset
       if (preService && document.getElementById('ct-service')) {
@@ -321,15 +338,19 @@
 
     } catch (error) {
       console.error("Message error:", error);
-      if (status) { status.style.display='block'; status.style.color='#e11d48'; status.textContent='Message could not be sent. Please try again.'; }
+      if (status) { status.style.display='block'; status.style.color='#e11d48'; status.textContent='Message could not be sent. Please check your internet connection and try again.'; }
+    } finally {
+      button.disabled = false;
+      button.textContent = "Send Message";
     }
-
-    button.disabled = false;
-    button.textContent = "Send Message";
   });
-</script>
+</script>  <script type="module" src="js/rating.js"></script>
 </body>
 </html>
+
+
+
+
 
 
 

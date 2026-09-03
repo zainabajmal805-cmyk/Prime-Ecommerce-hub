@@ -1239,6 +1239,66 @@ button, input, select, textarea { font: inherit; }
   font-weight: 500;
 }
 
+/* ── Star rating ── */
+.footer-stars {
+  display: inline-flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.footer-stars span {
+  font-size: 1.75rem;
+  color: rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: color 0.15s, transform 0.12s;
+  line-height: 1;
+  user-select: none;
+}
+
+.footer-stars span.fr-active,
+.footer-stars span.fr-selected {
+  color: #F59E0B;
+  transform: scale(1.15);
+}
+
+.footer-rating-msg {
+  color: rgba(255,255,255,0.65);
+  font-size: 0.84rem;
+  font-weight: 600;
+  min-height: 1.2em;
+  margin-bottom: 10px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.footer-rating-submit {
+  display: none;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 22px;
+  background: #F59E0B;
+  color: #111827;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.12s;
+  opacity: 0;
+}
+
+.footer-rating-submit:hover {
+  background: #FBBF24;
+  transform: translateY(-1px);
+}
+
+.footer-rating-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Keep old Google review button for pages that still use it */
 .footer-review-btn {
   display: inline-flex;
   align-items: center;

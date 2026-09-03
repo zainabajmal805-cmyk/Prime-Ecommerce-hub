@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="images/logo.png" />
   <title>Events & Activities | Prime Ecommerce Hub</title>
   <meta name="description" content="Explore moments from Prime Ecommerce Hub training sessions, mentorship programs, workshops, certificate ceremonies and student achievements." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -39,16 +40,10 @@
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
       <a href="services.html">Services</a>
-      <div class="nav-dropdown">
-        <a href="learn.html" class="nav-dropdown-trigger">Courses <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-top:-1px;"><polyline points="6 9 12 15 18 9"/></svg></a>
-        <div class="nav-dropdown-menu">
-          <a href="learn.html">Courses</a>
-          <a href="internship.html">Internship</a>
-        </div>
-      </div>
+      <a href="learn.html">Courses</a>
+      <a href="internship.html">Internship</a>
       <a href="events.html" class="active">Events</a>
       <a href="contact.html">Contact</a>
-      <a href="dashboard.html">Admin Login</a>
     </nav>
     <a href="apply.html" class="nav-enroll-btn">Enroll Now</a>
   </div>
@@ -325,15 +320,16 @@
       <a href="learn.html">Digital Marketing</a>
       <a href="internship.html">Internship</a>
     </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="services.html">Services</a>
-      <a href="learn.html">Courses</a>
-      <a href="events.html">Events</a>
-      <a href="contact.html">Contact</a>
-    </div>
+          <div class="footer-col">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="learn.html">Courses</a>
+        <a href="internship.html">Internship</a>
+        <a href="events.html">Events</a>
+        <a href="contact.html">Contact</a>
+      </div>
     <div class="footer-col">
       <h4>Contact</h4>
       <a href="tel:+923126772989">+92-312-6772989</a>
@@ -343,11 +339,16 @@
     </div>
   </div>
   <div class="footer-rating">
-    <p class="footer-rating-title">Enjoyed your experience with us?</p>
-    <a href="https://share.google/Cmy3PlHVLdxsTCx32" target="_blank" class="footer-review-btn">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#D4AF37" stroke="#D4AF37" stroke-width="1"/></svg>
-      Review Us on Google
-    </a>
+    <p class="footer-rating-title">Rate Your Experience</p>
+    <div class="footer-stars" id="footerStars">
+      <span data-val="1">&#9733;</span>
+      <span data-val="2">&#9733;</span>
+      <span data-val="3">&#9733;</span>
+      <span data-val="4">&#9733;</span>
+      <span data-val="5">&#9733;</span>
+    </div>
+    <p class="footer-rating-msg" id="footerRatingMsg"></p>
+    <button class="footer-rating-submit" id="footerRatingSubmit">Submit Rating</button>
   </div>
   <div class="footer-bottom">
     <p>&copy; 2026 Prime Ecommerce Hub. All Rights Reserved.</p>
@@ -360,7 +361,11 @@
     this.classList.toggle('active');
   });
 </script>
-
+  <script type="module" src="js/rating.js"></script>
 </body>
 </html>
+
+
+
+
 

@@ -1,6 +1,8 @@
-// ============================================
-// INTERNSHIP-ENROLL.JS — Firebase Save
-// ============================================
+// ============================================================
+// INTERNSHIP-ENROLL.JS
+// Handles internship application form → Firebase Firestore
+// Collection: internshipApplications
+// ============================================================
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import {
@@ -23,84 +25,61 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
-// ========================
-// INTERNSHIP FORM SUBMIT
-// ========================
+const form      = document.getElementById('internshipForm');
+const submitBtn = document.getElementById('ia-submit-btn');
+const statusEl  = document.getElementById('ia-status');
+const formSec   = document.getElementById('ia-form-section');
+const successEl = document.getElementById('ia-success');
 
-window.submitInternship = async function() {
+function showStatus(msg, type) {
+  statusEl.textContent  = msg;
+  statusEl.className    = `ia-status ${type}`;
+  statusEl.style.display = 'block';
+}
 
-  // 1. Gather inputs
-  const fullName        = document.getElementById('int-fullname').value.trim();
-  const whatsapp        = document.getElementById('int-phone').value.trim();
-  const email           = document.getElementById('int-email').value.trim();
-  const city            = document.getElementById('int-city').value.trim();
-  const internshipField = document.getElementById('int-field').value;
-  const preferredMode   = document.getElementById('int-mode').value;
-  const reason          = document.getElementById('int-reason').value.trim();
-  const source          = document.getElementById('int-source').value;
+if (form) {
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-  // 2. Clear previous error highlights
-  ['int-fullname','int-phone','int-email','int-city','int-field','int-mode'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.borderColor = '';
+    const name      = document.getElementById('ia-name')?.value.trim();
+    const phone     = document.getElementById('ia-phone')?.value.trim();
+    const email     = document.getElementById('ia-email')?.value.trim();
+    const city      = document.getElementById('ia-city')?.value.trim();
+    const education = document.getElementById('ia-education')?.value;
+    const interest  = document.getElementById('ia-interest')?.value;
+    const reason    = document.getElementById('ia-reason')?.value.trim();
+
+    // Validation
+    if (!name || !phone || !email || !education || !interest || !reason) {
+      showStatus('Please fill in all required fields.', 'error');
+      return;
+    }
+
+    submitBtn.disabled    = true;
+    submitBtn.textContent = 'Submitting...';
+
+    try {
+      await addDoc(collection(db, 'internshipApplications'), {
+        name:      name,
+        phone:     phone,
+        email:     email,
+        city:      city      || '',
+        education: education,
+        interest:  interest,
+        reason:    reason,
+        status:    'Pending',
+        createdAt: serverTimestamp()
+      });
+
+      // Show success screen
+      if (formSec)   formSec.style.display   = 'none';
+      if (successEl) successEl.style.display = 'block';
+
+    } catch (error) {
+      console.error('Internship application error:', error);
+      showStatus('Submission failed. Please try again.', 'error');
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Submit Application';
+    }
   });
-
-  // 3. Validation
-  let hasError = false;
-
-  function showError(id) {
-    const el = document.getElementById(id);
-    if (el) el.style.borderColor = '#e11d48';
-    hasError = true;
-  }
-
-  if (!fullName)        showError('int-fullname');
-  if (!city)            showError('int-city');
-  if (!internshipField) showError('int-field');
-  if (!preferredMode)   showError('int-mode');
-
-  // WhatsApp validation
-  const phoneRegex = /^[0-9+\-\s()]{10,15}$/;
-  if (!whatsapp || !phoneRegex.test(whatsapp)) showError('int-phone');
-
-  // Email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email || !emailRegex.test(email)) showError('int-email');
-
-  if (hasError) {
-    alert('Please fill all required fields correctly.');
-    return;
-  }
-
-  // 4. Disable button to prevent double submit
-  const btn = document.querySelector('[onclick="submitInternship()"]');
-  if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
-
-  // 5. Save to Firebase Firestore
-  try {
-    await addDoc(collection(db, "internshipApplications"), {
-      fullName:        fullName,
-      whatsapp:        whatsapp,
-      email:           email,
-      city:            city,
-      internshipField: internshipField,
-      preferredMode:   preferredMode,
-      reason:          reason,
-      source:          source,
-      status:          "Pending",
-      submissionDate:  new Date().toLocaleDateString("en-GB"),
-      submissionTime:  new Date().toLocaleTimeString("en-PK"),
-      createdAt:       serverTimestamp()
-    });
-
-    // 6. Show success panel
-    document.getElementById('ap-step-1').style.display = 'none';
-    document.getElementById('ap-step-success').style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  } catch (error) {
-    console.error("Firebase internship error:", error);
-    alert("There was an error submitting your application. Please try again.");
-    if (btn) { btn.disabled = false; btn.textContent = 'Apply for Internship'; }
-  }
-};
+}
